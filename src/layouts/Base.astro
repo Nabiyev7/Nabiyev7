@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import { SITE } from '../data/site';
+import { photo, url } from '../lib/utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Unsplash photo id for the share preview and the blurred page backdrop. */
+  image?: string;
+  current?: string;
+  /** Home page draws its own full-screen scene; inner pages get a blurred backdrop + footer. */
+  home?: boolean;
+  jsonLd?: object;
+}
+const { title, description = SITE.description, image = '1537996194471-e657df975ab4', current, home = false, jsonLd } = Astro.props;
+const fullTitle = title ? `${title} – ${SITE.name}` : `${SITE.name} – Osiyo va Islandiyaga guruh turlari`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = photo(image, 1200);
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#071d21" />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="uz_UZ" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>
+      // Hide images that fail to load instead of showing a broken-image icon.
+      document.addEventListener('error', function (e) {
+        if (e.target && e.target.tagName === 'IMG') e.target.classList.add('is-broken');
+      }, true);
+    </script>
+  </head>
+  <body class:list={{ 'is-home': home }}>
+    <a href="#main" class="skip-link">Asosiy qismga o‘tish</a>
+    {!home && (
+      <div class="backdrop" aria-hidden="true">
+        <img src={photo(image, 640)} alt="" fetchpriority="low" />
+      </div>
+    )}
+    <Header current={current} solid={!home} />
+    <main id="main">
+      <slot />
+    </main>
+    {!home && (
+      <footer class="footer">
+        <span>© {year} {SITE.name}. Barcha huquqlar himoyalangan.</span>
+        <span>
+          <a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a> ·
+          <a href={`https://t.me/${SITE.telegram}`} target="_blank" rel="noopener">@{SITE.telegram}</a>
+        </span>
+      </footer>
+    )}
+    <script>
+      import { initSaved } from '../scripts/saved';
+      initSaved();
+    </script>
+  </body>
+</html>

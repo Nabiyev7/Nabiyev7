@@ -1,0 +1,460 @@
+---
+import Base from '../layouts/Base.astro';
+import Stars from '../components/Stars.astro';
+import { SITE } from '../data/site';
+import { destinations, photo, srcset, url } from '../lib/utils';
+
+const first = destinations[0];
+const clientData = destinations.map((d) => ({
+  slug: d.slug, name: d.name, rating: d.rating, tone: d.tone, tagline: d.tagline, photo: d.photo,
+  href: url(`/yonalishlar/${d.slug}/`),
+}));
+const pad = (n: number) => String(n).padStart(2, '0');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  name: SITE.name,
+  description: SITE.description,
+  telephone: SITE.phone,
+  url: new URL(url('/'), Astro.site).href,
+  areaServed: 'UZ',
+};
+---
+<Base home current="home" image={first.photo} jsonLd={jsonLd}>
+  <section class="scene" data-scene aria-roledescription="karusel" aria-label="Turlar">
+    {destinations.map((d, i) => (
+      <img
+        class:list={['bg', { 'is-active': i === 0 }]}
+        style={`background-color:${d.tone}`}
+        alt=""
+        aria-hidden="true"
+        sizes="100vw"
+        {...(i === 0
+          ? { src: photo(d.photo, 1920), srcset: srcset(d.photo, [960, 1440, 1920, 2560]), fetchpriority: 'high' }
+          : { 'data-src': photo(d.photo, 1920), 'data-srcset': srcset(d.photo, [960, 1440, 1920, 2560]) })}
+      />
+    ))}
+    <div class="shade" aria-hidden="true"></div>
+
+    <div class="rail" aria-label="Slaydni tanlash">
+      <span class="rail__line"></span>
+      {destinations.map((d, i) => (
+        <button type="button" class="dot" data-dot={i} aria-label={d.name} aria-current={i === 0 ? 'true' : undefined}><span></span></button>
+      ))}
+      <span class="rail__line rail__line--down"></span>
+      <div class="rail__count"><span data-num>01</span><span class="rail__total">/ {pad(destinations.length)}</span></div>
+    </div>
+
+    <div class="hero" data-pause>
+      <h1 class="hero__title" data-title aria-label={first.name}>
+        {first.name.split('').map((ch, i) => (
+          <span aria-hidden="true" style={`animation-delay:${(0.15 + i * 0.055).toFixed(3)}s`}>{ch}</span>
+        ))}
+      </h1>
+      <p class="hero__desc" data-desc>{first.tagline}</p>
+      <a class="explore" data-explore href={url(`/yonalishlar/${first.slug}/`)}>
+        Batafsil
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <!-- Desktop: stacked card carousel (cards are built by the script below) -->
+    <div class="cards" data-cards data-pause></div>
+    <div class="arrows">
+      <button type="button" class="arrow" data-prev aria-label="Oldingi">←</button>
+      <button type="button" class="arrow" data-next aria-label="Keyingi">→</button>
+    </div>
+
+    <!-- Mobile: progress + swipeable row -->
+    <div class="progress" aria-hidden="true">
+      <span data-num>01</span>
+      <div class="progress__track"><div class="progress__bar" data-bar></div></div>
+      <span class="progress__total">{pad(destinations.length)}</span>
+    </div>
+    <div class="row" data-row>
+      {destinations.map((d, i) => (
+        <div class="mcard" data-mcard={i}>
+          <div class="mcard__img" style={`background-color:${d.tone}`}>
+            <img src={photo(d.photo, 400)} alt="" loading="lazy" />
+          </div>
+          <div class="mcard__meta">
+            <span class="mcard__name">{d.name}</span>
+            <Stars rating={d.rating} />
+          </div>
+          <button type="button" class="hit" data-go={i} aria-label={`${d.name}ni ko‘rsatish`}></button>
+          <button type="button" class="save-icon" data-save={d.slug} aria-pressed="false" aria-label={`${d.name}ni saqlash`}>
+            <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z" stroke-width="2" stroke-linejoin="round"></path></svg>
+          </button>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <script type="application/json" id="dest-data" set:html={JSON.stringify({ items: clientData, autoplay: SITE.carousel.autoplay, interval: SITE.carousel.intervalSec })} />
+</Base>
+
+<style>
+  .scene {
+    position: relative; width: 100%; height: 100svh; min-height: 560px; overflow: hidden;
+    background: var(--bg);
+    --hero-left: clamp(110px, 9vw, 150px);
+    --cards-left: 55%;
+    --s: 1;
+  }
+  @media (max-width: 1099px) { .scene { --cards-left: 50%; } }
+
+  .bg {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transform: scale(1.06);
+    transition: opacity 1.4s cubic-bezier(.45, 0, .2, 1), transform 8s var(--ease);
+    will-change: opacity, transform;
+  }
+  .bg.is-active { opacity: 1; transform: scale(1); }
+  .shade {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(4,18,22,.82) 0%, rgba(4,18,22,.45) 40%, rgba(4,18,22,0) 72%),
+      linear-gradient(0deg, rgba(4,18,22,.55) 0%, rgba(4,18,22,0) 35%);
+  }
+
+  /* Left rail */
+  .rail {
+    position: absolute; left: 56px; top: 50%; transform: translateY(-50%); z-index: 10;
+    display: flex; flex-direction: column; align-items: center; gap: 22px;
+  }
+  .rail__line { width: 1px; height: 56px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.35)); }
+  .rail__line--down { background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0)); }
+  .dot { width: 14px; height: 14px; padding: 0; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .dot span {
+    display: block; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.5);
+    transition: all .8s var(--ease-io);
+  }
+  .dot[aria-current] span { width: 10px; height: 10px; background: var(--accent); box-shadow: 0 0 0 5px rgba(255,122,48,.22); }
+  .rail__count {
+    font-family: var(--font-display); font-size: 18px; letter-spacing: .08em;
+    writing-mode: vertical-rl; transform: rotate(180deg); display: flex; gap: 4px;
+  }
+  .rail__total { color: rgba(255,255,255,.45); }
+
+  /* Hero copy */
+  .hero {
+    position: absolute; z-index: 10; left: var(--hero-left); top: 50%; transform: translateY(-62%);
+    max-width: 52%; display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .hero__title {
+    font-family: var(--font-display); font-weight: 400; line-height: .92; letter-spacing: .01em;
+    text-transform: uppercase; display: flex; overflow: hidden; padding-top: .06em;
+    font-size: min(260px, 18vw, 30vh);
+  }
+  .hero__title span { display: inline-block; animation: fxLetter .9s var(--ease) both; }
+  .hero__desc {
+    margin-top: 20px; max-width: 380px; font-size: 15px; font-weight: 300; line-height: 1.65;
+    color: rgba(255,255,255,.8); text-wrap: pretty; animation: fxFade 1s var(--ease-io) .45s both;
+  }
+  .explore {
+    margin-top: 32px; display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px 14px 28px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.55); background: rgba(255,255,255,.1);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    font-size: 14px; font-weight: 500; letter-spacing: .04em; transition: all .6s var(--ease);
+  }
+  .explore span {
+    width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--bg);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background .6s var(--ease);
+  }
+  .explore:hover { border-color: var(--accent); background: rgba(255,122,48,.15); }
+  .explore:hover span { background: var(--accent); color: #fff; }
+
+  /* Desktop cards */
+  .cards {
+    position: absolute; z-index: 10; left: var(--cards-left); right: 0;
+    bottom: calc(110px + 20px * var(--s)); height: calc(380px * var(--s));
+  }
+  .cards :global(.card) {
+    position: absolute; left: 0; bottom: 0; transform-origin: left bottom;
+    will-change: transform, opacity; backface-visibility: hidden;
+    border-radius: 16px; padding: 8px; background: rgba(255,255,255,.1);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.32); display: flex; flex-direction: column;
+  }
+  .cards :global(.card:hover) { border-color: rgba(255,122,48,.8); }
+  .cards :global(.card__img) { position: relative; flex: 1; border-radius: 10px; overflow: hidden; }
+  .cards :global(.card__img img) { width: 100%; height: 100%; object-fit: cover; }
+  .cards :global(.card__meta) { padding: 12px 6px 4px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .cards :global(.card__name) { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cards :global(.save-icon) { top: 18px; right: 18px; }
+
+  .arrows { position: absolute; z-index: 10; left: 50%; bottom: 40px; transform: translateX(-50%); display: flex; gap: 14px; }
+  .arrow {
+    width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4);
+    background: rgba(255,255,255,.06); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    font-size: 18px; cursor: pointer; transition: all .6s var(--ease);
+  }
+  .arrow:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Shared card pieces */
+  :global(.hit) { position: absolute; inset: 0; z-index: 1; border: none; background: transparent; cursor: pointer; border-radius: inherit; padding: 0; }
+  :global(.save-icon) {
+    position: absolute; z-index: 2; width: 34px; height: 34px; border-radius: 50%; padding: 0;
+    border: 1px solid rgba(255,255,255,.45); background: rgba(8,30,34,.35);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff;
+    transition: all .5s ease;
+  }
+  :global(.save-icon:hover) { border-color: var(--accent); }
+  :global(.save-icon path) { fill: none; stroke: currentColor; }
+  :global(.save-icon[aria-pressed='true'] path) { fill: var(--accent); stroke: var(--accent); }
+
+  /* Mobile */
+  .progress, .row { display: none; }
+  @media (max-width: 767px) {
+    .rail, .cards, .arrows { display: none; }
+    .hero { left: 24px; right: 24px; top: 104px; transform: none; max-width: none; }
+    .hero__title { font-size: min(150px, 30vw); }
+    .hero__desc { font-size: 14px; }
+    .progress {
+      display: flex; position: absolute; z-index: 10; left: 24px; right: 24px; bottom: 252px;
+      align-items: center; gap: 10px; font-family: var(--font-display); font-size: 16px; letter-spacing: .08em;
+    }
+    .progress__track { flex: 1; height: 1px; background: rgba(255,255,255,.25); position: relative; }
+    .progress__bar {
+      position: absolute; left: 0; top: -1px; height: 3px; width: 20%; background: var(--accent);
+      border-radius: 2px; transition: width .9s var(--ease-io);
+    }
+    .progress__total { color: rgba(255,255,255,.5); }
+    .row {
+      display: flex; position: absolute; z-index: 10; left: 0; right: 0; bottom: 24px; gap: 14px;
+      overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 24px; scroll-padding: 0 24px;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .row::-webkit-scrollbar { display: none; }
+    .mcard {
+      position: relative; flex: 0 0 auto; scroll-snap-align: start; width: 150px; height: 204px;
+      border-radius: 16px; padding: 6px; background: rgba(255,255,255,.1);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.32); display: flex; flex-direction: column;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25); transition: border-color .5s ease;
+    }
+    .mcard.is-active { border-color: var(--accent); }
+    .mcard__img { position: relative; flex: 1; border-radius: 10px; overflow: hidden; }
+    .mcard__img img { width: 100%; height: 100%; object-fit: cover; }
+    .mcard__meta { padding: 8px 4px 2px; display: flex; flex-direction: column; gap: 2px; }
+    .mcard__name { font-size: 13px; font-weight: 500; }
+    .mcard :global(.stars) { font-size: 10px; }
+    .mcard .save-icon { top: 12px; right: 12px; width: 32px; height: 32px; }
+  }
+  @media (max-width: 767px) and (max-height: 700px) {
+    .hero__desc { display: none; }
+  }
+</style>
+
+<script>
+  import { paint } from '../scripts/saved';
+
+  type Item = { slug: string; name: string; rating: number; tone: string; tagline: string; photo: string; href: string };
+  const { items, autoplay, interval } = JSON.parse(document.getElementById('dest-data')!.textContent!) as {
+    items: Item[]; autoplay: boolean; interval: number;
+  };
+  const N = items.length;
+  const $ = <T extends Element = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const $$ = <T extends Element = HTMLElement>(s: string) => Array.from(document.querySelectorAll<T>(s));
+
+  const scene = $('[data-scene]');
+  const bgs = $$<HTMLImageElement>('.bg');
+  const title = $('[data-title]');
+  let desc = $('[data-desc]');
+  const explore = $<HTMLAnchorElement>('[data-explore]');
+  const cardsBox = $('[data-cards]');
+  const row = $('[data-row]');
+  const mcards = $$('[data-mcard]');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const img = (id: string, w: number) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
+  const starsHtml = (r: number) =>
+    `<span class="stars" role="img" aria-label="Reyting: 5 dan ${r}">` +
+    [0, 1, 2, 3, 4].map((k) => `<span${k < r ? ' class="on"' : ''}>★</span>`).join('') + '</span>';
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  let offset = 0;
+  let active = 0;
+  let elapsed = 0;
+  let paused = false;
+
+  // Load a background only when it's needed (active or next up).
+  const loadBg = (i: number) => {
+    const el = bgs[i];
+    if (el.dataset.src) {
+      el.srcset = el.dataset.srcset!;
+      el.src = el.dataset.src;
+      delete el.dataset.src;
+    }
+  };
+
+  // Desktop stack: 14 slots cover offsets -5..+8 so cards can slide in and out on both sides.
+  const SLOTS = 14;
+  const cards = Array.from({ length: SLOTS }, () => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      <div class="card__img"><img alt="" loading="lazy"></div>
+      <div class="card__meta"><span class="card__name"></span><span class="card__stars"></span></div>
+      <button type="button" class="hit"></button>
+      <button type="button" class="save-icon" aria-pressed="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z" stroke-width="2" stroke-linejoin="round"></path></svg>
+      </button>`;
+    cardsBox.appendChild(el);
+    return el;
+  });
+
+  function heroSizes() {
+    const w = innerWidth, h = innerHeight;
+    const s = Math.min(1, Math.max(0.6, (h - 200) / 560));
+    scene.style.setProperty('--s', String(s));
+    if (w < 768) { title.style.fontSize = ''; desc.style.maxWidth = ''; return; }
+    const heroLeft = Math.min(150, Math.max(110, w * 0.09));
+    const cardsLeft = w < 1100 ? w * 0.5 : w * 0.55;
+    const len = items[active].name.length;
+    const size = Math.min(260, w * 0.18, h * 0.3, (cardsLeft - heroLeft - 48) / (len * 0.4));
+    title.style.fontSize = size + 'px';
+    desc.style.maxWidth = Math.min(380, cardsLeft - heroLeft - 48) + 'px';
+  }
+
+  function renderCards() {
+    const s = Math.min(1, Math.max(0.6, (innerHeight - 200) / 560));
+    for (let v = offset - 5; v <= offset + 8; v++) {
+      const i = ((v % N) + N) % N;
+      const p = v - offset;
+      const d = items[i];
+      const el = cards[((v % SLOTS) + SLOTS) % SLOTS];
+      const big = p === 0;
+      const vis = p >= 0 && p <= 3;
+      if (el.dataset.slug !== d.slug) {
+        el.dataset.slug = d.slug;
+        const im = el.querySelector('img')!;
+        im.src = img(d.photo, 600);
+        (im.parentElement as HTMLElement).style.backgroundColor = d.tone;
+        el.querySelector('.card__name')!.textContent = d.name;
+        el.querySelector('.card__stars')!.innerHTML = starsHtml(d.rating);
+        const save = el.querySelector<HTMLButtonElement>('.save-icon')!;
+        save.dataset.save = d.slug;
+        save.setAttribute('aria-label', `${d.name}ni saqlash`);
+      }
+      const hit = el.querySelector<HTMLButtonElement>('.hit')!;
+      hit.dataset.step = String(p);
+      hit.setAttribute('aria-label', big ? `${d.name} – batafsil` : `${d.name}ni ko‘rsatish`);
+      const x = (p < 0 ? -224 : p === 0 ? 0 : 274 + (p - 1) * 224) * s;
+      Object.assign(el.style, {
+        width: 250 * s + 'px',
+        height: 340 * s + 'px',
+        transform: `translate3d(${x}px, ${big ? -24 * s : 0}px, 0) scale(${big ? 1 : 0.8})`,
+        opacity: vis ? '1' : '0',
+        zIndex: String(10 - Math.abs(p)),
+        pointerEvents: vis ? 'auto' : 'none',
+        boxShadow: big ? '0 30px 60px rgba(0,0,0,.35)' : '0 14px 34px rgba(0,0,0,.22)',
+        transition: `transform 1.2s cubic-bezier(.76,0,.24,1) ${Math.max(0, Math.min(p, 3)) * 0.06}s, opacity 1s cubic-bezier(.76,0,.24,1), box-shadow 1.2s cubic-bezier(.76,0,.24,1), border-color .5s ease`,
+      });
+      el.inert = !vis;
+    }
+    paint(cardsBox);
+  }
+
+  function render(first = false) {
+    const d = items[active];
+    bgs.forEach((b, i) => b.classList.toggle('is-active', i === active));
+    loadBg(active);
+    loadBg((active + 1) % N);
+
+    if (!first) {
+      title.setAttribute('aria-label', d.name);
+      title.innerHTML = d.name.split('').map((ch, i) =>
+        `<span aria-hidden="true" style="animation-delay:${(0.15 + i * 0.055).toFixed(3)}s">${esc(ch)}</span>`).join('');
+      const nd = desc.cloneNode() as HTMLElement;
+      nd.textContent = d.tagline;
+      desc.replaceWith(nd);
+      desc = nd;
+    }
+    explore.href = d.href;
+    explore.setAttribute('aria-label', `${d.name} haqida batafsil`);
+
+    $$('[data-dot]').forEach((b, i) => b.toggleAttribute('aria-current', i === active));
+    const num = String(active + 1).padStart(2, '0');
+    $$('[data-num]').forEach((n) => (n.textContent = num));
+    $('[data-bar]').style.width = ((active + 1) / N) * 100 + '%';
+    mcards.forEach((m, i) => m.classList.toggle('is-active', i === active));
+
+    renderCards();
+    heroSizes();
+  }
+
+  function go(step: number) {
+    if (!step) return;
+    elapsed = 0;
+    offset += step;
+    active = ((offset % N) + N) % N;
+    render();
+    // keep the active mobile card in view
+    if (innerWidth < 768) {
+      const m = mcards[active];
+      row.scrollTo({ left: m.offsetLeft - 24, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+  function goTo(i: number) {
+    let d = (((i - active) % N) + N) % N;
+    if (d > N / 2) d -= N;
+    go(d);
+  }
+
+  // Events
+  $('[data-next]').addEventListener('click', () => go(1));
+  $('[data-prev]').addEventListener('click', () => go(-1));
+  $$('[data-dot]').forEach((b) => b.addEventListener('click', () => goTo(Number(b.dataset.dot))));
+  cardsBox.addEventListener('click', (e) => {
+    const hit = (e.target as Element).closest<HTMLElement>('.hit');
+    if (!hit) return;
+    const p = Number(hit.dataset.step);
+    if (p === 0) location.href = items[active].href;
+    else go(p);
+  });
+  row.addEventListener('click', (e) => {
+    const hit = (e.target as Element).closest<HTMLElement>('[data-go]');
+    if (!hit) return;
+    const i = Number(hit.dataset.go);
+    if (i === active) location.href = items[i].href;
+    else goTo(i);
+  });
+  document.addEventListener('keydown', (e) => {
+    const t = document.activeElement?.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || !document.getElementById('mobile-menu')!.hidden) return;
+    if (e.key === 'ArrowRight') go(1);
+    if (e.key === 'ArrowLeft') go(-1);
+  });
+  $$('[data-pause]').forEach((el) => {
+    el.addEventListener('mouseenter', () => (paused = true));
+    el.addEventListener('mouseleave', () => (paused = false));
+    el.addEventListener('focusin', () => (paused = true));
+    el.addEventListener('focusout', () => (paused = false));
+  });
+
+  let tx: number | null = null, ty = 0;
+  scene.addEventListener('touchstart', (e) => {
+    if (row.contains(e.target as Node)) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  scene.addEventListener('touchend', (e) => {
+    if (tx == null) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
+    tx = null;
+  });
+  addEventListener('resize', () => { renderCards(); heroSizes(); });
+
+  if (autoplay && !reduceMotion) {
+    setInterval(() => {
+      if (paused || document.hidden || !document.getElementById('mobile-menu')!.hidden) return;
+      elapsed += 200;
+      if (elapsed >= interval * 1000) go(1);
+    }, 200);
+  }
+
+  render(true);
+</script>

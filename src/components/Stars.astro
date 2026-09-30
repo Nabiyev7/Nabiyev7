@@ -1,0 +1,7 @@
+---
+interface Props { rating: number }
+const { rating } = Astro.props;
+---
+<span class="stars" role="img" aria-label={`Reyting: 5 dan ${rating}`}>
+  {[0, 1, 2, 3, 4].map((k) => <span class={k < rating ? 'on' : undefined}>★</span>)}
+</span>

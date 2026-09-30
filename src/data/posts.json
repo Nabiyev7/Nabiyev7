@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "ubudda-on-sokin-kun",
+    "destination": "bali",
+    "date": "2026-09-12",
+    "title": "Ubudda o‘n sokin kun",
+    "excerpt": "Sholi pog‘onalarini olomondan oldin qanday ko‘rish va katta yo‘ldan uzoqda qayerda to‘xtash haqida.",
+    "body": [
+      "Ubud erta uyg‘onadi. Soat yettida Tegallalang pog‘onalari allaqachon iliq bo‘ladi, to‘qqizda esa turistik avtobuslar keladi. Quyosh chiqishida borsangiz, so‘qmoqlar deyarli faqat sizniki.",
+      "Bali guruhlarimizni markazdan shimoldagi kichik oilaviy mehmonxonalarga joylashtiramiz: bozorgacha skuterda yaqin, lekin kechasi baqalar ovozi eshitiladigan darajada tinch."
+    ]
+  },
+  {
+    "slug": "yaponiyaga-birinchi-safar",
+    "destination": "yaponiya",
+    "date": "2026-08-28",
+    "title": "Yaponiyaga birinchi safar",
+    "excerpt": "Poyezd chiptalari, onsen odobi va nega birinchi safar uchun o‘n bir kun eng to‘g‘ri muddat.",
+    "body": [
+      "Ko‘pchilik birinchi safarda juda ko‘p joyni ko‘rishga urinadi. O‘n bir kun Tokio, Kioto va Hakoneda har kuni poyezdda o‘tirmasdan bemalol vaqt o‘tkazish imkonini beradi.",
+      "Onsen qoidalari oddiy: kirishdan oldin yuvining, sochiqni suvga tushirmang va sokin bo‘ling. Gidlarimiz birinchi oqshomdayoq hammasini tushuntirib beradi."
+    ]
+  },
+  {
+    "slug": "janubiy-sohil-boylab",
+    "destination": "islandiya",
+    "date": "2026-08-03",
+    "title": "Janubiy sohil bo‘ylab",
+    "excerpt": "Bir yozgi haftada 1-yo‘l bo‘ylab sharsharalar, muzlik ko‘llari va qora qumli plyajlar.",
+    "body": [
+      "Iyunda quyosh deyarli botmaydi, shuning uchun janubiy sohil bo‘ylab istalgan soatda yurish mumkin. Seljalandsfoss va Skogafossga kech oqshom boramiz: yorug‘lik yumshoq, to‘xtash joylari bo‘sh.",
+      "Haftamiz Yokulsarlonda yakunlanadi. U yerda aysberglar muzlikdan dengizga suzib ketadi."
+    ]
+  }
+]

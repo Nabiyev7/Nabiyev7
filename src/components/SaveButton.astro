@@ -1,0 +1,12 @@
+---
+// "Saqlash" (bookmark) toggle. State is kept in the visitor's browser (localStorage).
+interface Props { slug: string; name: string; variant?: 'icon' | 'text'; class?: string }
+const { slug, name, variant = 'icon', class: cls } = Astro.props;
+---
+{variant === 'icon' ? (
+  <button type="button" class:list={['save-icon', cls]} data-save={slug} aria-pressed="false" aria-label={`${name}ni saqlash`}>
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z" stroke-width="2" stroke-linejoin="round"></path></svg>
+  </button>
+) : (
+  <button type="button" class:list={['btn', cls]} data-save={slug} aria-pressed="false" data-label-on="Saqlandi ✓" data-label-off="Saqlash">Saqlash</button>
+)}

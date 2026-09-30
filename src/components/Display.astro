@@ -1,0 +1,16 @@
+---
+// Heading whose letters rise in one by one (as in the original design).
+// Screen readers get the plain text via aria-label.
+interface Props { text: string; tag?: 'h1' | 'h2'; size?: string }
+const { text, tag: Tag = 'h1', size } = Astro.props;
+const words = text.split(' ');
+---
+<Tag class="display" aria-label={text} style={size ? `font-size:${size}` : undefined}>
+  {words.map((word, wi) => (
+    <span class="w" aria-hidden="true">
+      {word.split('').map((ch, i) => (
+        <span class="ch" style={`animation-delay:${(0.1 + (wi * 4 + i) * 0.04).toFixed(2)}s`}>{ch}</span>
+      ))}
+    </span>
+  ))}
+</Tag>

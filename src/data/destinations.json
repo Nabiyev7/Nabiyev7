@@ -1,0 +1,301 @@
+[
+  {
+    "slug": "bali",
+    "name": "Bali",
+    "rating": 5,
+    "tone": "#0e3a3b",
+    "tagline": "Pog‘onali sholi dalalari, qoya ustidagi ibodatxonalar va janubiy sohildagi iliq to‘lqinlar. Sokin tonglar va uzoq oltin oqshomlar.",
+    "photo": "1537996194471-e657df975ab4",
+    "gallery": [
+      "1555400038-63f5ba517a47",
+      "1518548419970-58e3b4079ab2",
+      "1573790387438-4da905039392",
+      "1544644181-1484b3fdfc62"
+    ],
+    "best": "Aprel – Oktabr",
+    "duration": "8 kun",
+    "price": "$1 290",
+    "currency": "Rupiya (IDR)",
+    "timeDiff": "+3 soat",
+    "group": "12 kishigacha",
+    "highlights": [
+      "Tongda Batur vulqoniga chiqish",
+      "Tegallalang sholi pog‘onalari va Ubud",
+      "Ulun Danu Beratan ko‘l ibodatxonasi"
+    ],
+    "about": [
+      "Bali – Indoneziyaning eng mashhur oroli. Bu yerda hindu ibodatxonalari, yam-yashil sholi dalalari va okean sohillari bir-biriga yaqin joylashgan.",
+      "Tur Ubud va janubiy sohil o‘rtasida bo‘linadi: avval orolning madaniy markazida tog‘ va ibodatxonalarni ko‘rasiz, keyin Nusa Penida qoyalari va plyajlarda dam olasiz."
+    ],
+    "program": [
+      {
+        "day": "1 – 2 kun",
+        "title": "Ubudga kelish",
+        "text": "Aeroportdan transfer, Ubud bozori va Maymunlar o‘rmoni."
+      },
+      {
+        "day": "3 kun",
+        "title": "Batur vulqoni",
+        "text": "Tongda cho‘qqiga chiqish, issiq buloqlarda dam olish."
+      },
+      {
+        "day": "4 kun",
+        "title": "Sholi pog‘onalari",
+        "text": "Tegallalang va Jatiluwih dalalari bo‘ylab sayr."
+      },
+      {
+        "day": "5 – 6 kun",
+        "title": "Ibodatxonalar",
+        "text": "Ulun Danu Beratan, Tanah Lot va quyosh botishi."
+      },
+      {
+        "day": "7 – 8 kun",
+        "title": "Nusa Penida",
+        "text": "Kelingking va Diamond plyajlari, qaytish."
+      }
+    ],
+    "included": [
+      "Aviachiptalar (Toshkentdan)",
+      "Mehmonxona, nonushta bilan",
+      "Aeroport transferlari",
+      "O‘zbek tilidagi gid",
+      "Barcha ekskursiyalar va kirish chiptalari"
+    ]
+  },
+  {
+    "slug": "indoneziya",
+    "name": "Indoneziya",
+    "rating": 4,
+    "tone": "#0c3345",
+    "tagline": "Vulqon tizmalari, marjon riflari va sokin baliqchi qishloqlaridan iborat o‘n yetti ming orol.",
+    "photo": "1516690561799-46d8f74f9abf",
+    "gallery": [
+      "1596402184320-417e7178b2cd",
+      "1570789210967-2cac24afeb00",
+      "1559628233-100c798642d4",
+      "1604999333679-b86d54738315"
+    ],
+    "best": "May – Sentabr",
+    "duration": "12 kun",
+    "price": "$1 980",
+    "currency": "Rupiya (IDR)",
+    "timeDiff": "+2 soat",
+    "group": "10 kishigacha",
+    "highlights": [
+      "Raja Ampat orollari bo‘ylab sayohat",
+      "Komodo milliy bog‘iga qayiqda",
+      "Tongda Borobudur ibodatxonasi"
+    ],
+    "about": [
+      "Indoneziya – dunyodagi eng katta orollar davlati. Bitta safarda Yavaning qadimiy ibodatxonalari, Komodo ajdarlari va Raja Ampatning marjon riflarini ko‘rish mumkin.",
+      "Marshrut uchta orol guruhini qamrab oladi, ular orasida ichki reyslar va qayiqlarda harakatlanamiz. Tur faol sayohatni yoqtiradiganlar uchun."
+    ],
+    "program": [
+      {
+        "day": "1 – 3 kun",
+        "title": "Yava oroli",
+        "text": "Yogyakarta, tongda Borobudur va Prambanan ibodatxonalari."
+      },
+      {
+        "day": "4 – 6 kun",
+        "title": "Komodo",
+        "text": "Qayiqda milliy bog‘, pushti plyaj va snorkeling."
+      },
+      {
+        "day": "7 – 10 kun",
+        "title": "Raja Ampat",
+        "text": "Piaynemo ko‘rfazi, orollar orasida suzish va sho‘ng‘ish."
+      },
+      {
+        "day": "11 – 12 kun",
+        "title": "Jakarta",
+        "text": "Eski shahar bo‘ylab sayr va qaytish."
+      }
+    ],
+    "included": [
+      "Aviachiptalar (Toshkentdan)",
+      "Mehmonxona, nonushta bilan",
+      "Aeroport transferlari",
+      "O‘zbek tilidagi gid",
+      "Barcha ekskursiyalar va kirish chiptalari"
+    ]
+  },
+  {
+    "slug": "tailand",
+    "name": "Tailand",
+    "rating": 5,
+    "tone": "#113b33",
+    "tagline": "Moviy ko‘rfazlardan ko‘tarilgan ohaktosh qoyalar, fonusli tungi bozorlar va shimoldagi sokin daryo bo‘yi shaharchalari.",
+    "photo": "1552465011-b4e21bf6e79a",
+    "gallery": [
+      "1528181304800-259b08848526",
+      "1506665531195-3566af2b4dfa",
+      "1508009603885-50cf7c579365",
+      "1563492065599-3520f775eeed"
+    ],
+    "best": "Noyabr – Mart",
+    "duration": "10 kun",
+    "price": "$1 150",
+    "currency": "Bat (THB)",
+    "timeDiff": "+2 soat",
+    "group": "14 kishigacha",
+    "highlights": [
+      "Krabi atrofida an’anaviy qayiqlarda",
+      "Chiang Mayning qadimiy ibodatxonalari",
+      "Bangkokda ko‘cha taomlari oqshomi"
+    ],
+    "about": [
+      "Tailand – birinchi Osiyo safari uchun eng qulay yo‘nalish. Poytaxtning gavjum ko‘chalari, shimolning sokin ibodatxonalari va janubning moviy ko‘rfazlari bir turda.",
+      "Guruh Bangkokdan boshlab shimolga Chiang Mayga uchadi, so‘ng dam olish uchun Krabi va Phi Phi orollariga yo‘l oladi."
+    ],
+    "program": [
+      {
+        "day": "1 – 3 kun",
+        "title": "Bangkok",
+        "text": "Katta saroy, Wat Arun, suzuvchi bozor va tungi ko‘cha taomlari."
+      },
+      {
+        "day": "4 – 6 kun",
+        "title": "Chiang May",
+        "text": "Doi Suthep ibodatxonasi, fil qo‘riqxonasi va pazandachilik darsi."
+      },
+      {
+        "day": "7 – 9 kun",
+        "title": "Krabi va Phi Phi",
+        "text": "Orollar bo‘ylab qayiq sayri, Railay plyaji."
+      },
+      {
+        "day": "10 kun",
+        "title": "Qaytish",
+        "text": "Bangkok orqali Toshkentga uchish."
+      }
+    ],
+    "included": [
+      "Aviachiptalar (Toshkentdan)",
+      "Mehmonxona, nonushta bilan",
+      "Aeroport transferlari",
+      "O‘zbek tilidagi gid",
+      "Barcha ekskursiyalar va kirish chiptalari"
+    ]
+  },
+  {
+    "slug": "yaponiya",
+    "name": "Yaponiya",
+    "rating": 5,
+    "tone": "#183041",
+    "tagline": "Kedr o‘rmonlari, tog‘ onsenlari va erta tongda sokin turadigan qadimiy yog‘och ko‘chalar.",
+    "photo": "1528164344705-47542687000d",
+    "gallery": [
+      "1493976040374-85c8e12f0c0e",
+      "1490806843957-31f4c9a91c65",
+      "1540959733332-eab4deabeeaf",
+      "1542051841857-5f90071e7989"
+    ],
+    "best": "Mart – May, Okt – Noy",
+    "duration": "11 kun",
+    "price": "$2 640",
+    "currency": "Iyena (JPY)",
+    "timeDiff": "+4 soat",
+    "group": "12 kishigacha",
+    "highlights": [
+      "Kioto ibodatxonalari va Gion",
+      "Fuji manzarali Hakone onsenlari",
+      "Tokio mahallalari bo‘ylab sayr"
+    ],
+    "about": [
+      "Yaponiyada qadimiy an’analar va zamonaviy shaharlar yonma-yon yashaydi. Bahorda sakura, kuzda qizil zarang barglari mamlakatni eng go‘zal holatga keltiradi.",
+      "Shaharlar orasida tezyurar Shinkansen poyezdida harakatlanamiz. Bir kecha an’anaviy ryokan mehmonxonasida onsen bilan o‘tadi."
+    ],
+    "program": [
+      {
+        "day": "1 – 4 kun",
+        "title": "Tokio",
+        "text": "Asakusa, Shibuya, Meiji ibodatxonasi va Tsukiji bozori."
+      },
+      {
+        "day": "5 – 6 kun",
+        "title": "Hakone",
+        "text": "Fuji manzarasi, Ashi ko‘li va ryokanda onsen."
+      },
+      {
+        "day": "7 – 9 kun",
+        "title": "Kioto",
+        "text": "Fushimi Inari, Kinkaku-ji, Gion va Arashiyama bambuk o‘rmoni."
+      },
+      {
+        "day": "10 – 11 kun",
+        "title": "Nara va Osaka",
+        "text": "Nara bug‘ulari, Osaka ko‘cha taomlari, qaytish."
+      }
+    ],
+    "included": [
+      "Aviachiptalar (Toshkentdan)",
+      "Mehmonxona, nonushta bilan",
+      "Aeroport transferlari",
+      "O‘zbek tilidagi gid",
+      "Barcha ekskursiyalar va kirish chiptalari"
+    ]
+  },
+  {
+    "slug": "islandiya",
+    "name": "Islandiya",
+    "rating": 4,
+    "tone": "#1e3848",
+    "tagline": "Qora qumli plyajlar, muzlik ko‘llari va shimoliy fyordlar uzra yarim tungi yorug‘lik.",
+    "photo": "1476610182048-b716b8518aae",
+    "gallery": [
+      "1504829857797-ddff29c27927",
+      "1531366936337-7c912a4589a7",
+      "1529963183134-61a90db47eaf"
+    ],
+    "best": "Iyun – Avgust",
+    "duration": "7 kun",
+    "price": "$2 380",
+    "currency": "Krona (ISK)",
+    "timeDiff": "−5 soat",
+    "group": "8 kishigacha",
+    "highlights": [
+      "Janubiy sohil sharsharalari",
+      "Yokulsarlon muzlik ko‘li",
+      "Vik qora qumli plyaji"
+    ],
+    "about": [
+      "Islandiya – vulqonlar, muzliklar va sharsharalar oroli. Yozda quyosh deyarli botmaydi, kuz va qishda esa shimoliy yog‘du ko‘rinadi.",
+      "Kichik guruhda jip bilan janubiy sohil bo‘ylab yuramiz. Har kuni 2 – 3 soatlik yo‘l va ko‘p to‘xtashlar rejalashtirilgan."
+    ],
+    "program": [
+      {
+        "day": "1 – 2 kun",
+        "title": "Reykyavik",
+        "text": "Poytaxt bo‘ylab sayr va Oltin halqa: Geysir, Gullfoss, Tingvellir."
+      },
+      {
+        "day": "3 kun",
+        "title": "Sharsharalar",
+        "text": "Seljalandsfoss va Skogafoss."
+      },
+      {
+        "day": "4 kun",
+        "title": "Vik",
+        "text": "Reynisfjara qora plyaji va Dyrholaey qoyasi."
+      },
+      {
+        "day": "5 – 6 kun",
+        "title": "Yokulsarlon",
+        "text": "Muzlik ko‘li, Olmos plyaji va muz g‘origa ekskursiya."
+      },
+      {
+        "day": "7 kun",
+        "title": "Qaytish",
+        "text": "Moviy laguna va aeroportga transfer."
+      }
+    ],
+    "included": [
+      "Aviachiptalar (Toshkentdan)",
+      "Mehmonxona, nonushta bilan",
+      "Aeroport transferlari",
+      "O‘zbek tilidagi gid",
+      "Barcha ekskursiyalar va kirish chiptalari"
+    ]
+  }
+]

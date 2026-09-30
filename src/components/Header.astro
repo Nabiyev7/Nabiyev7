@@ -1,0 +1,47 @@
+---
+import Logo from './Logo.astro';
+import { url } from '../lib/utils';
+interface Props { current?: string; solid?: boolean }
+const { current, solid = false } = Astro.props;
+const links = [
+  { key: 'home', label: 'Bosh sahifa', href: url('/') },
+  { key: 'destinations', label: 'Yo‘nalishlar', href: url('/yonalishlar/') },
+  { key: 'blog', label: 'Blog', href: url('/blog/') },
+  { key: 'contact', label: 'Aloqa', href: url('/aloqa/') },
+];
+---
+<header class:list={['nav', { 'nav--solid': solid }]}>
+  <Logo />
+  <nav class="nav__links" aria-label="Asosiy menyu">
+    {links.map((l) => <a href={l.href} aria-current={l.key === current ? 'page' : undefined}>{l.label}</a>)}
+  </nav>
+  <a href={url('/aloqa/')} class="btn btn--primary nav__cta">Turga yozilish</a>
+  <button class="nav__burger" type="button" aria-label="Menyuni ochish" aria-expanded="false" aria-controls="mobile-menu" data-menu-open>
+    <span></span><span></span>
+  </button>
+</header>
+
+<div class="menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menyu" hidden>
+  <div class="menu__top">
+    <Logo />
+    <button class="menu__close" type="button" aria-label="Menyuni yopish" data-menu-close>×</button>
+  </div>
+  <nav class="menu__links" aria-label="Mobil menyu">
+    {links.map((l) => <a href={l.href} aria-current={l.key === current ? 'page' : undefined}>{l.label}</a>)}
+  </nav>
+  <a href={url('/aloqa/')} class="btn btn--primary">Turga yozilish</a>
+</div>
+
+<script>
+  const menu = document.getElementById('mobile-menu')!;
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]')!;
+  const setOpen = (open: boolean) => {
+    menu.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    document.documentElement.dataset.menu = open ? 'open' : '';
+    (open ? menu.querySelector<HTMLElement>('[data-menu-close]') : openBtn)?.focus();
+  };
+  openBtn.addEventListener('click', () => setOpen(true));
+  menu.querySelector('[data-menu-close]')!.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setOpen(false); });
+</script>
