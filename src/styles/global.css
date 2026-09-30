@@ -20,7 +20,7 @@
   --gutter: 56px;
   color-scheme: dark;
 }
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-height: 520px) {
   :root { --gutter: 24px; }
 }
 
@@ -107,7 +107,7 @@ h1, h2, h3, p { margin: 0; }
 .logo { display: flex; align-items: center; gap: 10px; justify-self: start; color: var(--ink); }
 .logo span { font-family: var(--font-display); font-size: 28px; letter-spacing: 0.06em; line-height: 1; padding-top: 3px; }
 .nav__links { display: flex; gap: 44px; font-size: 14px; letter-spacing: 0.02em; }
-.nav__links a { color: rgba(255, 255, 255, 0.78); transition: color 0.5s ease; }
+.nav__links a { color: rgba(255, 255, 255, 0.78); transition: color 0.5s ease; padding-block: 12px; margin-block: -12px; }
 .nav__links a:hover, .nav__links a[aria-current] { color: var(--accent); }
 .nav__cta { justify-self: end; }
 .nav__burger {
@@ -118,6 +118,11 @@ h1, h2, h3, p { margin: 0; }
   flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer;
 }
 .nav__burger span { display: block; width: 16px; height: 1.5px; background: #fff; }
+@media (max-height: 520px) {
+  .nav { padding-block: 16px; }
+  .menu__links { margin-top: 24px; font-size: 40px; }
+  .menu a.btn { margin-top: 24px; }
+}
 @media (max-width: 767px) {
   .nav { padding: 20px var(--gutter); grid-template-columns: 1fr auto; }
   .nav__links, .nav__cta { display: none; }
@@ -128,7 +133,7 @@ h1, h2, h3, p { margin: 0; }
   position: fixed; inset: 0; z-index: 50;
   background: rgba(5, 22, 26, 0.94);
   -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
-  display: flex; flex-direction: column; padding: 20px 24px 24px;
+  display: flex; flex-direction: column; padding: 20px 24px 24px; overflow-y: auto;
 }
 .menu__top { display: flex; justify-content: space-between; align-items: center; }
 .menu__close {
@@ -156,7 +161,8 @@ h1, h2, h3, p { margin: 0; }
   border-top: 1px solid var(--line-soft); font-size: 13px; color: var(--ink-mute);
 }
 .footer a:hover { color: var(--accent); }
-.footer__contacts { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.footer__contacts { display: flex; flex-wrap: wrap; gap: 0 16px; }
+.footer__contacts a { display: inline-block; padding-block: 12px; margin-block: -12px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }

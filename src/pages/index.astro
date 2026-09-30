@@ -205,15 +205,21 @@ const jsonLd = {
   :global(.save-icon path) { fill: none; stroke: currentColor; }
   :global(.save-icon[aria-pressed='true'] path) { fill: var(--accent); stroke: var(--accent); }
 
-  /* Mobile */
+  /* Phones: content flows top-to-bottom instead of being pinned with fixed offsets,
+     so nothing overlaps on short screens (small phones, browser bars). */
   .progress, .row { display: none; }
-  @media (max-width: 767px) {
+  @media (max-width: 767px), (max-width: 1024px) and (max-height: 520px) {
     .rail, .cards, .arrows { display: none; }
-    .hero { left: 24px; right: 24px; top: 104px; transform: none; max-width: none; }
-    .hero__title { font-size: min(150px, 30vw); }
-    .hero__desc { font-size: 14px; }
+    .scene {
+      height: auto; min-height: 100svh;
+      display: flex; flex-direction: column; padding: 92px 0 20px;
+    }
+    .hero { position: relative; left: auto; right: auto; top: auto; transform: none; max-width: none; padding: 0 24px 24px; }
+    .hero__title { font-size: min(150px, 30vw, 19svh); }
+    .hero__desc { font-size: 14px; margin-top: 14px; }
+    .explore { margin-top: 24px; }
     .progress {
-      display: flex; position: absolute; z-index: 10; left: 24px; right: 24px; bottom: 252px;
+      display: flex; position: relative; z-index: 10; margin: auto 24px 14px;
       align-items: center; gap: 10px; font-family: var(--font-display); font-size: 16px; letter-spacing: .08em;
     }
     .progress__track { flex: 1; height: 1px; background: rgba(255,255,255,.25); position: relative; }
@@ -223,13 +229,13 @@ const jsonLd = {
     }
     .progress__total { color: rgba(255,255,255,.5); }
     .row {
-      display: flex; position: absolute; z-index: 10; left: 0; right: 0; bottom: 24px; gap: 14px;
+      display: flex; position: relative; z-index: 10; flex: none; gap: 14px;
       overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 24px; scroll-padding: 0 24px;
       scrollbar-width: none; -webkit-overflow-scrolling: touch;
     }
     .row::-webkit-scrollbar { display: none; }
     .mcard {
-      position: relative; flex: 0 0 auto; scroll-snap-align: start; width: 150px; height: 204px;
+      position: relative; flex: 0 0 auto; scroll-snap-align: start; width: 150px; height: clamp(160px, 30svh, 204px);
       border-radius: 16px; padding: 6px; background: rgba(255,255,255,.1);
       -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
       border: 1px solid rgba(255,255,255,.32); display: flex; flex-direction: column;
@@ -243,7 +249,25 @@ const jsonLd = {
     .mcard :global(.stars) { font-size: 10px; }
     .mcard .save-icon { top: 12px; right: 12px; width: 32px; height: 32px; }
   }
-  @media (max-width: 767px) and (max-height: 700px) {
+  @media (max-width: 767px) and (max-height: 600px) {
+    .hero__desc { display: none; }
+  }
+
+  /* Phone in landscape: copy on the left, swipeable cards on the right */
+  @media (min-width: 568px) and (max-width: 1024px) and (max-height: 520px) {
+    .scene {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 1fr auto auto;
+      column-gap: 24px; row-gap: 14px; padding: 76px 24px 16px;
+    }
+    .hero { grid-column: 1; grid-row: 1 / span 3; align-self: center; padding: 0; }
+    .hero__title { font-size: min(110px, 24svh); }
+    .hero__desc { display: block; margin-top: 12px; font-size: 13px; line-height: 1.55; }
+    .explore { margin-top: 18px; padding: 10px 12px 10px 22px; }
+    .progress { grid-column: 2; grid-row: 2; margin: 0; }
+    .row { grid-column: 2; grid-row: 3; margin-right: -24px; padding: 0 24px 0 0; scroll-padding: 0; }
+    .mcard { width: 136px; height: clamp(120px, calc(100svh - 150px), 190px); }
+  }
+  @media (max-width: 1024px) and (max-height: 340px) {
     .hero__desc { display: none; }
   }
 </style>
@@ -268,6 +292,8 @@ const jsonLd = {
   const row = $('[data-row]');
   const mcards = $$('[data-mcard]');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Same breakpoint as the CSS: phones in portrait or landscape use the swipeable row.
+  const compactMq = matchMedia('(max-width: 767px), (max-width: 1024px) and (max-height: 520px)');
 
   const img = (id: string, w: number) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
   const starsHtml = (r: number) =>
@@ -310,7 +336,7 @@ const jsonLd = {
     const w = innerWidth, h = innerHeight;
     const s = Math.min(1, Math.max(0.6, (h - 200) / 560));
     scene.style.setProperty('--s', String(s));
-    if (w < 768) { title.style.fontSize = ''; desc.style.maxWidth = ''; return; }
+    if (compactMq.matches) { title.style.fontSize = ''; desc.style.maxWidth = ''; return; }
     const heroLeft = Math.min(150, Math.max(110, w * 0.09));
     const cardsLeft = w < 1100 ? w * 0.5 : w * 0.55;
     const len = items[active].name.length;
@@ -393,9 +419,11 @@ const jsonLd = {
     active = ((offset % N) + N) % N;
     render();
     // keep the active mobile card in view
-    if (innerWidth < 768) {
+    if (compactMq.matches) {
       const m = mcards[active];
-      row.scrollTo({ left: m.offsetLeft - 24, behavior: reduceMotion ? 'auto' : 'smooth' });
+      const left = m.getBoundingClientRect().left - row.getBoundingClientRect().left + row.scrollLeft
+        - parseFloat(getComputedStyle(row).paddingLeft);
+      row.scrollTo({ left, behavior: reduceMotion ? 'auto' : 'smooth' });
     }
   }
   function goTo(i: number) {
