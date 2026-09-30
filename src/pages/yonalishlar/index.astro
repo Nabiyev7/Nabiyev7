@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import Display from '../../components/Display.astro';
+import DestCard from '../../components/DestCard.astro';
+import { destinations } from '../../lib/utils';
+---
+<Base title="Yo‘nalishlar" current="destinations" image={destinations[0].photo}
+  description="Foxico 2026 – 27 turlari: Bali, Indoneziya, Tailand, Yaponiya va Islandiya. Davomiyligi, narxi va sayohat dasturi.">
+  <div class="page">
+    <p class="eyebrow">Turlar 2026 – 27</p>
+    <Display text="Yo‘nalishlar" />
+    <div class="grid">
+      {destinations.map((d) => <DestCard d={d} />)}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 40px; }
+</style>

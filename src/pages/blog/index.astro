@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import Display from '../../components/Display.astro';
+import { destBySlug, formatDate, photo, posts, srcset, url } from '../../lib/utils';
+---
+<Base title="Blog" current="blog" image={destBySlug(posts[0].destination).photo}
+  description="Foxico sayohat qaydlari: Bali, Yaponiya va Islandiya bo‘yicha maslahatlar va tajribalar.">
+  <div class="page">
+    <p class="eyebrow">Sayohat qaydlari</p>
+    <Display text="Blog" />
+    <div class="grid">
+      {posts.map((p) => {
+        const d = destBySlug(p.destination);
+        return (
+          <a class="post" href={url(`/blog/${p.slug}/`)}>
+            <div class="post__img" style={`background-color:${d.tone}`}>
+              <img src={photo(d.photo, 700)} srcset={srcset(d.photo, [500, 700, 1000])} sizes="(max-width: 700px) 100vw, 360px" alt="" loading="lazy" />
+            </div>
+            <span class="post__meta"><time datetime={p.date}>{formatDate(p.date)}</time> · {d.name}</span>
+            <h2 class="post__title">{p.title}</h2>
+            <p class="post__excerpt">{p.excerpt}</p>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 24px; margin-top: 40px; }
+  .post { display: flex; flex-direction: column; gap: 14px; transition: color .5s ease; }
+  .post:hover { color: var(--accent); }
+  .post__img { height: 220px; border-radius: 16px; border: 1px solid var(--line); overflow: hidden; }
+  .post__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .post:hover .post__img img { transform: scale(1.04); }
+  .post__meta { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+  .post__title { font-family: var(--font-display); font-weight: 400; font-size: 34px; line-height: 1; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+  .post__excerpt { font-size: 14px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,.75); }
+</style>

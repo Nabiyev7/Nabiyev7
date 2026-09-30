@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Display from '../components/Display.astro';
+import { url } from '../lib/utils';
+---
+<Base title="Sahifa topilmadi" description="Bu sahifa mavjud emas.">
+  <div class="page nf">
+    <p class="eyebrow">404</p>
+    <Display text="Adashib qoldik" />
+    <p class="lead">Bu sahifa mavjud emas yoki boshqa joyga ko‘chirilgan. Yo‘nalishlardan birini tanlang yoki bosh sahifaga qayting.</p>
+    <div class="actions">
+      <a class="btn btn--primary" href={url('/yonalishlar/')}>Yo‘nalishlar →</a>
+      <a class="btn" href={url('/')}>Bosh sahifa</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .nf { min-height: 60svh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+  .lead { margin-top: 16px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+</style>

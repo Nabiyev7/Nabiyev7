@@ -66,8 +66,8 @@ const year = new Date().getFullYear();
     {!home && (
       <footer class="footer">
         <span>© {year} {SITE.name}. Barcha huquqlar himoyalangan.</span>
-        <span>
-          <a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a> ·
+        <span class="footer__contacts">
+          <a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a>
           <a href={`https://t.me/${SITE.telegram}`} target="_blank" rel="noopener">@{SITE.telegram}</a>
         </span>
       </footer>

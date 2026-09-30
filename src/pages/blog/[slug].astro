@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import Display from '../../components/Display.astro';
+import { destBySlug, formatDate, photo, posts, srcset, url, type Post } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Post };
+const d = destBySlug(p.destination);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: p.title,
+  description: p.excerpt,
+  datePublished: p.date,
+  image: photo(d.photo, 1200),
+  publisher: { '@type': 'Organization', name: 'Foxico' },
+};
+---
+<Base title={p.title} description={p.excerpt} image={d.photo} current="blog" jsonLd={jsonLd}>
+  <article class="page article">
+    <a href={url('/blog/')} class="btn">← Barcha maqolalar</a>
+    <p class="eyebrow meta"><time datetime={p.date}>{formatDate(p.date)}</time> · {d.name}</p>
+    <Display text={p.title} size="clamp(48px, 6vw, 80px)" />
+    <div class="cover" style={`background-color:${d.tone}`}>
+      <img src={photo(d.photo, 1400)} srcset={srcset(d.photo, [800, 1400, 2000])} sizes="(max-width: 780px) 100vw, 720px" alt={d.name} fetchpriority="high" />
+    </div>
+    {p.body.map((para) => <p class="para">{para}</p>)}
+    <a class="btn btn--primary cta" href={url(`/yonalishlar/${d.slug}/`)}>{d.name} turini ko‘rish →</a>
+  </article>
+</Base>
+
+<style>
+  .article { max-width: calc(720px + 2 * var(--gutter)); display: flex; flex-direction: column; align-items: flex-start; }
+  .meta { margin-top: 32px; }
+  .cover { width: 100%; height: 460px; margin-top: 28px; border-radius: 16px; overflow: hidden; }
+  .cover img { width: 100%; height: 100%; object-fit: cover; }
+  .para { margin-top: 24px; font-size: 16px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,.85); text-wrap: pretty; max-width: 65ch; }
+  .cta { margin-top: 32px; }
+  @media (max-width: 767px) { .cover { height: 260px; } }
+</style>

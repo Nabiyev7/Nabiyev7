@@ -1,0 +1,33 @@
+---
+import Stars from './Stars.astro';
+import { photo, srcset, url, type Destination } from '../lib/utils';
+interface Props { d: Destination }
+const { d } = Astro.props;
+---
+<a class="dcard" href={url(`/yonalishlar/${d.slug}/`)}>
+  <div class="dcard__img" style={`background-color:${d.tone}`}>
+    <img src={photo(d.photo, 600)} srcset={srcset(d.photo, [400, 600, 900])} sizes="(max-width: 600px) 100vw, 280px" alt={d.name} loading="lazy" />
+  </div>
+  <div class="dcard__body">
+    <div class="dcard__row">
+      <span class="dcard__name">{d.name}</span>
+      <Stars rating={d.rating} />
+    </div>
+    <span class="dcard__meta">{d.duration} · {d.price} dan</span>
+  </div>
+</a>
+
+<style>
+  .dcard {
+    padding: 8px; border-radius: 16px; background: var(--glass); border: 1px solid var(--line);
+    display: flex; flex-direction: column; transition: border-color .5s ease;
+  }
+  .dcard:hover { border-color: var(--accent); }
+  .dcard__img { height: 220px; border-radius: 10px; overflow: hidden; }
+  .dcard__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .dcard:hover .dcard__img img { transform: scale(1.04); }
+  .dcard__body { padding: 14px 8px 8px; display: flex; flex-direction: column; gap: 6px; }
+  .dcard__row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .dcard__name { font-size: 16px; font-weight: 500; }
+  .dcard__meta { font-size: 13px; color: rgba(255, 255, 255, .7); }
+</style>

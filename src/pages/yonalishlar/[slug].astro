@@ -1,0 +1,164 @@
+---
+import Base from '../../layouts/Base.astro';
+import Display from '../../components/Display.astro';
+import SaveButton from '../../components/SaveButton.astro';
+import { destinations, facts, photo, srcset, url, type Destination } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return destinations.map((d) => ({ params: { slug: d.slug }, props: { d } }));
+}
+const { d } = Astro.props as { d: Destination };
+const images = [d.photo, ...d.gallery];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: `${d.name} turi`,
+  description: d.tagline,
+  image: photo(d.photo, 1200),
+  offers: { '@type': 'Offer', price: d.price.replace(/[^\d]/g, ''), priceCurrency: 'USD' },
+  itinerary: d.program.map((p) => ({ '@type': 'TouristAttraction', name: p.title, description: p.text })),
+};
+---
+<Base title={`${d.name} turi`} description={`${d.name}: ${d.tagline} ${d.duration}, ${d.price} dan.`} image={d.photo} current="destinations" jsonLd={jsonLd}>
+  <div class="page">
+    <a href={url('/yonalishlar/')} class="btn back">← Barcha yo‘nalishlar</a>
+
+    <div class="top">
+      <div class="media">
+        <div class="main" style={`background-color:${d.tone}`}>
+          <img data-main src={photo(d.photo, 1400)} srcset={srcset(d.photo, [800, 1400, 2000])} sizes="(max-width: 900px) 100vw, 560px" alt={d.name} fetchpriority="high" />
+        </div>
+        <div class="thumbs" role="group" aria-label="Rasmlar">
+          {images.map((id, k) => (
+            <button type="button" class="thumb" data-thumb={id} aria-label={`${k + 1}-rasm`} aria-pressed={k === 0 ? 'true' : 'false'}>
+              <img src={photo(id, 300)} alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="info">
+        <p class="eyebrow">Yo‘nalish</p>
+        <Display text={d.name} />
+        <p class="lead desc">{d.tagline}</p>
+        <dl class="facts">
+          {facts(d).map((f) => (
+            <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+          ))}
+        </dl>
+        <ul class="highlights">
+          {d.highlights.map((h) => <li>{h}</li>)}
+        </ul>
+        <div class="actions">
+          <a class="btn btn--primary" href={url(`/aloqa/?yonalish=${d.slug}`)}>Turga yozilish →</a>
+          <SaveButton slug={d.slug} name={d.name} variant="text" />
+        </div>
+      </div>
+    </div>
+
+    <div class="more">
+      <section>
+        <h2 class="section-title">Tur haqida</h2>
+        {d.about.map((p) => <p class="para">{p}</p>)}
+        <div class="included">
+          <span class="included__label">Narxga kiradi</span>
+          <ul>{d.included.map((i) => <li>{i}</li>)}</ul>
+        </div>
+      </section>
+      <section>
+        <h2 class="section-title">Sayohat dasturi</h2>
+        <ol class="program">
+          {d.program.map((p) => (
+            <li>
+              <span class="program__day">{p.day}</span>
+              <div>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .back { margin-bottom: 32px; }
+  .top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start; }
+  .media { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .main {
+    height: 460px; border-radius: 16px; border: 1px solid rgba(255,255,255,.25); overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,.35);
+  }
+  .main img { width: 100%; height: 100%; object-fit: cover; transition: opacity .4s ease; }
+  .main img.is-loading { opacity: .4; }
+  .thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .thumb {
+    aspect-ratio: 1 / 1; padding: 0; border-radius: 10px; border: 2px solid transparent; overflow: hidden;
+    background: var(--glass); cursor: pointer; opacity: .6; transition: all .5s ease;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .thumb:hover { opacity: 1; }
+  .thumb[aria-pressed='true'] { border-color: var(--accent); opacity: 1; }
+
+  .info { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+  .desc { margin-top: 16px; }
+  .facts {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 16px; margin: 32px 0 0; width: 100%;
+    padding: 22px 0; border-top: 1px solid rgba(255,255,255,.18); border-bottom: 1px solid rgba(255,255,255,.18);
+  }
+  .facts div { display: flex; flex-direction: column; gap: 6px; }
+  .facts dt { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+  .facts dd { margin: 0; font-size: 15px; font-weight: 500; }
+  .highlights { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-direction: column; gap: 12px; }
+  .highlights li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,.88); }
+  .highlights li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+  .more {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px;
+    margin-top: 80px; padding-top: 56px; border-top: 1px solid var(--line-soft);
+  }
+  .more section { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .para { font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--ink-soft); text-wrap: pretty; }
+  .included {
+    display: flex; flex-direction: column; gap: 12px; margin-top: 12px; padding: 24px;
+    border-radius: 16px; background: var(--glass); border: 1px solid var(--line);
+  }
+  .included__label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute); }
+  .included ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .included li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,.9); }
+  .included li::before { content: '✓'; color: var(--accent); font-size: 13px; }
+  .program { list-style: none; padding: 0; margin: 0; }
+  .program li {
+    display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding: 18px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .program__day { font-family: var(--font-display); font-size: 22px; letter-spacing: .04em; color: var(--accent); line-height: 1.1; }
+  .program h3 { font-size: 15px; font-weight: 500; margin: 0 0 4px; }
+  .program p { font-size: 14px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,.72); }
+
+  @media (max-width: 767px) {
+    .main { height: 260px; }
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .more { margin-top: 56px; padding-top: 40px; }
+    .program li { grid-template-columns: 80px 1fr; gap: 14px; }
+  }
+</style>
+
+<script>
+  const main = document.querySelector<HTMLImageElement>('[data-main]')!;
+  const src = (id: string, w: number) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
+  document.querySelectorAll<HTMLButtonElement>('[data-thumb]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const id = b.dataset.thumb!;
+      document.querySelectorAll('[data-thumb]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      main.classList.add('is-loading');
+      main.classList.remove('is-broken');
+      main.onload = () => main.classList.remove('is-loading');
+      main.srcset = [800, 1400, 2000].map((w) => `${src(id, w)} ${w}w`).join(', ');
+      main.src = src(id, 1400);
+    });
+  });
+</script>

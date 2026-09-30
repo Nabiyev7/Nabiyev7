@@ -1,0 +1,385 @@
+---
+import Base from '../layouts/Base.astro';
+import Display from '../components/Display.astro';
+import { SITE, formConfigured } from '../data/site';
+import { destinations, photo } from '../lib/utils';
+
+const times = ['Ertalab', 'Kunduzi', 'Kechqurun'];
+const first = destinations[0];
+const clientConfig = {
+  configured: formConfigured,
+  endpoint: SITE.form.endpoint,
+  accessKey: SITE.form.accessKey,
+  telegram: SITE.telegram,
+  destinations: destinations.map((d) => ({ slug: d.slug, name: d.name })),
+};
+---
+<Base title="Aloqa" current="contact" image={first.photo}
+  description="Foxico bilan bog‘laning: turga yozilish, narx va sanalar bo‘yicha so‘rov qoldiring. Menejer bir ish kuni ichida qo‘ng‘iroq qiladi.">
+  <div class="page contact">
+    <div class="intro">
+      <p class="eyebrow">Safaringizni rejalang</p>
+      <Display text="Aloqa" />
+      <p class="lead">Qayerga va qachon bormoqchi ekaningizni yozing. Foxico menejeri bir ish kuni ichida qo‘ng‘iroq qilib, yo‘nalish va narxni aytib beradi.</p>
+      <div class="channels">
+        <a class="channel" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
+          <span><span class="channel__label">Telefon</span><span class="channel__value">{SITE.phone}</span></span>
+          <span class="channel__go" aria-hidden="true">→</span>
+        </a>
+        <a class="channel" href={`https://t.me/${SITE.telegram}`} target="_blank" rel="noopener">
+          <span><span class="channel__label">Telegram</span><span class="channel__value">@{SITE.telegram}</span></span>
+          <span class="channel__go" aria-hidden="true">→</span>
+        </a>
+        <div class="channel">
+          <span><span class="channel__label">Ish vaqti</span><span class="channel__value">{SITE.hours}</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="done" data-done hidden>
+        <span class="done__icon" aria-hidden="true">✓</span>
+        <h2 class="done__title" data-done-title tabindex="-1">Rahmat!</h2>
+        <p class="done__text" data-done-text></p>
+        <div class="done__actions">
+          <a class="btn btn--primary" data-tg-link href={`https://t.me/${SITE.telegram}`} target="_blank" rel="noopener" hidden>Telegram’da yozish →</a>
+          <button type="button" class="btn" data-reset>Yana so‘rov yuborish</button>
+        </div>
+      </div>
+
+      <form data-form novalidate>
+        <div class="form-head">
+          <h2 class="section-title">So‘rov qoldiring</h2>
+          <p>Biz sizga qo‘ng‘iroq qilib, barcha savollarga javob beramiz.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-name">Ismingiz</label>
+          <input id="f-name" name="name" autocomplete="name" placeholder="Ism va familiya" required />
+        </div>
+
+        <div class="field">
+          <label for="f-phone">Telefon raqam</label>
+          <div class="phone">
+            <span aria-hidden="true">+998</span>
+            <input id="f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="90 123 45 67" aria-describedby="f-phone-hint" required />
+          </div>
+          <span id="f-phone-hint" class="sr-only">+998 dan keyingi 9 ta raqam</span>
+        </div>
+
+        <div class="pair">
+          <div class="field dd">
+            <span class="label" id="f-dest-label">Yo‘nalish</span>
+            <input type="hidden" name="destination" value={first.slug} data-dest-input />
+            <button type="button" class="dd__btn" data-dd-btn aria-haspopup="listbox" aria-expanded="false" aria-labelledby="f-dest-label f-dest-value">
+              <span class="dd__thumb" data-dd-thumb style={`background-color:${first.tone}`}><img src={photo(first.photo, 120)} alt="" /></span>
+              <span class="dd__value" id="f-dest-value" data-dd-value>{first.name}</span>
+              <span class="dd__chev" aria-hidden="true">▾</span>
+            </button>
+            <ul class="dd__list" role="listbox" aria-labelledby="f-dest-label" tabindex="-1" data-dd-list hidden>
+              {destinations.map((d, i) => (
+                <li role="option" id={`opt-${d.slug}`} data-value={d.slug} data-name={d.name} aria-selected={i === 0 ? 'true' : 'false'}>
+                  <span class="dd__thumb" style={`background-color:${d.tone}`}><img src={photo(d.photo, 120)} alt="" loading="lazy" /></span>
+                  <span class="dd__name">{d.name}</span>
+                  <span class="dd__check" aria-hidden="true">✓</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="field">
+            <span class="label" id="f-people-label">Sayohatchilar</span>
+            <div class="counter" role="group" aria-labelledby="f-people-label">
+              <button type="button" data-people="-1" aria-label="Kamaytirish">−</button>
+              <output data-people-out aria-live="polite">2 kishi</output>
+              <button type="button" data-people="1" aria-label="Ko‘paytirish">+</button>
+            </div>
+            <input type="hidden" name="people" value="2" data-people-input />
+          </div>
+        </div>
+
+        <fieldset class="field">
+          <legend class="label">Qo‘ng‘iroq uchun qulay vaqt</legend>
+          <div class="chips">
+            {times.map((t) => (
+              <label class="chip"><input type="radio" name="time" value={t} checked={t === 'Kunduzi'} /><span>{t}</span></label>
+            ))}
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="f-msg">Izoh</label>
+          <textarea id="f-msg" name="message" rows="3" placeholder="Sanalar, byudjet yoki boshqa istaklar"></textarea>
+        </div>
+
+        <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <p class="err" data-err role="alert"></p>
+        <button type="submit" class="btn btn--primary submit" data-submit>So‘rov yuborish →</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="application/json" id="form-config" set:html={JSON.stringify(clientConfig)} />
+</Base>
+
+<style>
+  .contact { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 56px; align-items: start; }
+  .intro { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+  .intro .lead { margin-top: 16px; max-width: 420px; }
+  .channels { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; width: 100%; max-width: 420px; }
+  .channel {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 18px 20px; border-radius: 16px; background: var(--glass); border: 1px solid var(--line);
+    transition: border-color .5s ease;
+  }
+  a.channel:hover { border-color: var(--accent); }
+  .channel > span:first-child { display: flex; flex-direction: column; gap: 4px; }
+  .channel__label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute); }
+  .channel__value { font-size: 17px; font-weight: 500; user-select: all; }
+  .channel__go { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex: none; }
+
+  .panel {
+    padding: 32px; border-radius: 20px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.28);
+    box-shadow: 0 30px 60px rgba(0,0,0,.25); min-width: 0;
+  }
+  @media (max-width: 480px) { .panel { padding: 24px 18px; } }
+
+  form { display: flex; flex-direction: column; gap: 18px; }
+  .form-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+  .form-head p { font-size: 14px; font-weight: 300; color: rgba(255,255,255,.72); }
+  .field { display: flex; flex-direction: column; gap: 8px; min-width: 0; border: 0; margin: 0; padding: 0; position: relative; }
+  .field > label, .label {
+    font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.65); padding: 0;
+  }
+  input:not([type='radio']):not([type='checkbox']), textarea {
+    width: 100%; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.25); color: #fff; font: inherit; font-size: 16px; outline: none;
+    transition: border-color .4s ease;
+  }
+  textarea { resize: vertical; }
+  input:focus, textarea:focus { border-color: var(--accent); }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,.4); }
+  [aria-invalid='true'] { border-color: var(--accent-soft) !important; }
+
+  .phone { display: flex; align-items: center; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.25); overflow: hidden; }
+  .phone:focus-within { border-color: var(--accent); }
+  .phone span { padding: 14px 10px 14px 16px; font-size: 16px; border-right: 1px solid rgba(255,255,255,.18); }
+  .phone input { border: none !important; background: transparent !important; border-radius: 0 !important; letter-spacing: .04em; padding-left: 12px !important; min-width: 0; }
+
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 18px; }
+
+  .dd__btn {
+    display: flex; align-items: center; gap: 10px; width: 100%; padding: 5px 14px 5px 5px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.06); font-size: 14px;
+    cursor: pointer; text-align: left; transition: border-color .5s ease;
+  }
+  .dd__btn[aria-expanded='true'], .dd__btn:hover { border-color: var(--accent); }
+  .dd__thumb { width: 38px; height: 38px; border-radius: 9px; overflow: hidden; flex: none; }
+  .dd__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .dd__value { flex: 1; }
+  .dd__chev { font-size: 12px; color: rgba(255,255,255,.7); transition: transform .5s var(--ease); }
+  .dd__btn[aria-expanded='true'] .dd__chev { transform: rotate(180deg); }
+  .dd__list {
+    position: absolute; top: 100%; left: 0; right: 0; margin: 8px 0 0; z-index: 5; padding: 6px; list-style: none;
+    border-radius: 14px; background: rgba(8,32,36,.96); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,.25); box-shadow: 0 24px 48px rgba(0,0,0,.4);
+    display: flex; flex-direction: column; gap: 2px; outline: none;
+  }
+  .dd__list li { display: flex; align-items: center; gap: 10px; padding: 5px 12px 5px 5px; border-radius: 10px; font-size: 14px; cursor: pointer; transition: background .3s ease; }
+  .dd__list li .dd__thumb { width: 32px; height: 32px; border-radius: 8px; }
+  .dd__list li:hover, .dd__list li.is-focus { background: rgba(255,255,255,.1); }
+  .dd__list li[aria-selected='true'] { background: rgba(255,122,48,.18); }
+  .dd__name { flex: 1; }
+  .dd__check { font-size: 12px; color: var(--accent); visibility: hidden; }
+  .dd__list li[aria-selected='true'] .dd__check { visibility: visible; }
+
+  .counter { display: flex; align-items: center; justify-content: space-between; padding: 5px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.25); }
+  .counter button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: transparent; font-size: 18px; cursor: pointer; transition: all .5s ease; }
+  .counter button:hover { border-color: var(--accent); color: var(--accent); }
+  .counter output { font-size: 15px; font-weight: 500; }
+
+  legend.label { margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span {
+    display: inline-block; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.06); font-size: 13px; cursor: pointer; transition: all .5s ease;
+  }
+  .chip input:checked + span { background: var(--accent); border-color: var(--accent); }
+  .chip input:focus-visible + span { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .err { font-size: 13px; color: var(--accent-soft); min-height: 0; }
+  .err:empty { display: none; }
+  .submit { padding: 15px 22px; }
+  .submit[disabled] { opacity: .6; cursor: progress; }
+
+  .done { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px 0; }
+  .done__icon { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .done__title { font-family: var(--font-display); font-weight: 400; font-size: 48px; line-height: 1; text-transform: uppercase; outline: none; }
+  .done__text { font-size: 15px; font-weight: 300; line-height: 1.7; color: rgba(255,255,255,.8); }
+  .done__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+</style>
+
+<script>
+  type Cfg = { configured: boolean; endpoint: string; accessKey: string; telegram: string; destinations: { slug: string; name: string }[] };
+  const cfg = JSON.parse(document.getElementById('form-config')!.textContent!) as Cfg;
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const q = <T extends Element = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const err = q('[data-err]');
+  const nameInput = q<HTMLInputElement>('#f-name');
+  const phoneInput = q<HTMLInputElement>('#f-phone');
+
+  // ----- Destination listbox -----
+  const ddBtn = q<HTMLButtonElement>('[data-dd-btn]');
+  const ddList = q<HTMLUListElement>('[data-dd-list]');
+  const destInput = q<HTMLInputElement>('[data-dest-input]');
+  const options = Array.from(ddList.querySelectorAll<HTMLLIElement>('[role=option]'));
+  let focusIdx = 0;
+
+  const selectDest = (slug: string) => {
+    const opt = options.find((o) => o.dataset.value === slug);
+    if (!opt) return;
+    options.forEach((o) => o.setAttribute('aria-selected', String(o === opt)));
+    destInput.value = slug;
+    q('[data-dd-value]').textContent = opt.dataset.name!;
+    const thumb = q('[data-dd-thumb]');
+    const from = opt.querySelector<HTMLElement>('.dd__thumb')!;
+    thumb.style.backgroundColor = from.style.backgroundColor;
+    const img = thumb.querySelector('img')!;
+    img.classList.remove('is-broken');
+    img.src = from.querySelector('img')!.src;
+  };
+  const setFocus = (i: number) => {
+    focusIdx = (i + options.length) % options.length;
+    options.forEach((o, k) => o.classList.toggle('is-focus', k === focusIdx));
+    ddList.setAttribute('aria-activedescendant', options[focusIdx].id);
+  };
+  const openDd = (open: boolean) => {
+    ddList.hidden = !open;
+    ddBtn.setAttribute('aria-expanded', String(open));
+    if (open) {
+      setFocus(options.findIndex((o) => o.getAttribute('aria-selected') === 'true'));
+      ddList.focus();
+    }
+  };
+  ddBtn.addEventListener('click', () => openDd(ddList.hidden));
+  options.forEach((o) => o.addEventListener('click', () => { selectDest(o.dataset.value!); openDd(false); ddBtn.focus(); }));
+  ddList.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setFocus(focusIdx + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setFocus(focusIdx - 1); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectDest(options[focusIdx].dataset.value!); openDd(false); ddBtn.focus(); }
+    else if (e.key === 'Escape' || e.key === 'Tab') { openDd(false); if (e.key === 'Escape') ddBtn.focus(); }
+  });
+  document.addEventListener('click', (e) => {
+    if (!ddList.hidden && !(e.target as Element).closest('.dd')) openDd(false);
+  });
+
+  // Preselect from ?yonalish=bali (links from tour pages)
+  const pre = new URLSearchParams(location.search).get('yonalish');
+  if (pre) selectDest(pre);
+
+  // ----- People counter -----
+  const peopleInput = q<HTMLInputElement>('[data-people-input]');
+  document.querySelectorAll<HTMLButtonElement>('[data-people]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const n = Math.min(20, Math.max(1, Number(peopleInput.value) + Number(b.dataset.people)));
+      peopleInput.value = String(n);
+      q('[data-people-out]').textContent = `${n} kishi`;
+    }));
+
+  // ----- Phone mask: 90 123 45 67 -----
+  phoneInput.addEventListener('input', () => {
+    // Accept pasted or typed numbers with the country code ("+998 90 …").
+    const raw = phoneInput.value.trim();
+    let dg = raw.replace(/\D/g, '');
+    if (raw.startsWith('+') && dg.length <= 3 && '998'.startsWith(dg)) return; // still typing "+998"
+    if ((raw.startsWith('+') || dg.length > 9) && dg.startsWith('998')) dg = dg.slice(3);
+    dg = dg.slice(0, 9);
+    phoneInput.value = [dg.slice(0, 2), dg.slice(2, 5), dg.slice(5, 7), dg.slice(7, 9)].filter(Boolean).join(' ');
+    phoneInput.removeAttribute('aria-invalid');
+    err.textContent = '';
+  });
+  nameInput.addEventListener('input', () => { nameInput.removeAttribute('aria-invalid'); err.textContent = ''; });
+
+  // ----- Submit -----
+  const fail = (msg: string, field?: HTMLInputElement) => {
+    err.textContent = msg;
+    if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+  };
+
+  const showDone = (title: string, text: string, telegramFallback: boolean) => {
+    form.hidden = true;
+    q('[data-done]').hidden = false;
+    q('[data-done-title]').textContent = title;
+    q('[data-done-text]').textContent = text;
+    q('[data-tg-link]').hidden = !telegramFallback;
+    q('[data-done-title]').focus();
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    if (data.get('botcheck')) return;
+    const name = String(data.get('name') || '').trim();
+    const phoneDigits = String(data.get('phone') || '').replace(/\D/g, '');
+    if (!name) return fail('Ismingizni kiriting.', nameInput);
+    if (phoneDigits.length !== 9) return fail('Telefon raqamni to‘liq kiriting: 9 ta raqam, masalan 90 123 45 67.', phoneInput);
+
+    const destName = cfg.destinations.find((d) => d.slug === data.get('destination'))?.name ?? '';
+    const payload = {
+      Ism: name,
+      Telefon: `+998 ${data.get('phone')}`,
+      Yonalish: destName,
+      Sayohatchilar: `${data.get('people')} kishi`,
+      'Qulay vaqt': String(data.get('time')),
+      Izoh: String(data.get('message') || '').trim() || '—',
+    };
+    const text = `Foxico – yangi so‘rov\n` + Object.entries(payload).map(([k, v]) => `${k}: ${v}`).join('\n');
+
+    if (!cfg.configured) {
+      // No form service yet: let the visitor send the request via Telegram themselves.
+      let copied = false;
+      try { await navigator.clipboard.writeText(text); copied = true; } catch { /* clipboard blocked */ }
+      showDone(
+        `Deyarli tayyor, ${name}!`,
+        `So‘rovingizni menejerga Telegram orqali yuboring: @${cfg.telegram}. ` +
+          (copied ? 'Xabar matni nusxalandi – chatga joylab yuboring.' : `Xabarda ${destName} turi va telefon raqamingizni yozing.`),
+        true,
+      );
+      return;
+    }
+
+    const btn = q<HTMLButtonElement>('[data-submit]');
+    btn.disabled = true;
+    btn.textContent = 'Yuborilmoqda…';
+    try {
+      const body = cfg.accessKey
+        ? { access_key: cfg.accessKey, subject: `Foxico: ${destName} – ${name}`, from_name: 'Foxico sayti', ...payload }
+        : payload;
+      const res = await fetch(cfg.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      showDone(
+        `Rahmat, ${name}!`,
+        `${destName} bo‘yicha so‘rovingiz qabul qilindi. Menejerimiz +998 ${data.get('phone')} raqamiga tez orada qo‘ng‘iroq qiladi.`,
+        false,
+      );
+    } catch {
+      fail(`So‘rov yuborilmadi. Internetni tekshirib, qayta urinib ko‘ring yoki Telegram’da yozing: @${cfg.telegram}.`);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'So‘rov yuborish →';
+    }
+  });
+
+  q('[data-reset]').addEventListener('click', () => {
+    (form.elements.namedItem('message') as HTMLTextAreaElement).value = '';
+    q('[data-done]').hidden = true;
+    form.hidden = false;
+    nameInput.focus();
+  });
+</script>
