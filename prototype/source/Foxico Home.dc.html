@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0e3a3b"/><polygon points="30,32 50,44 70,32 64,56 50,70 36,56" fill="#FF7A30"/></svg></template>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;background:#071d21;overflow:hidden}
+*{box-sizing:border-box}
+a{color:rgba(255,255,255,.78);text-decoration:none}
+a:hover{color:#FF7A30}
+button{font:inherit}
+@keyframes fxLetter{from{opacity:0;transform:translateY(70%)}to{opacity:1;transform:none}}
+@keyframes fxFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div onTouchStart="{{ onTouchStart }}" onTouchEnd="{{ onTouchEnd }}" style="position:relative;width:100vw;height:100vh;min-height:560px;overflow:hidden;background:#071d21;color:#fff;font-family:'Inter',system-ui,sans-serif;">
+
+  <sc-for list="{{ bgs }}" as="b" hint-placeholder-count="1">
+    <div style="position:absolute;inset:0;background-color:{{ b.tone }};background-image:{{ b.image }};background-size:cover;background-position:center;opacity:{{ b.opacity }};transform:{{ b.transform }};transition:opacity 1.4s cubic-bezier(.45,0,.2,1), transform 8s cubic-bezier(.22,1,.36,1);will-change:opacity, transform;">
+      <sc-if value="{{ b.placeholder }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;right:32px;top:96px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.4);text-transform:uppercase;">[ fon rasmi · {{ b.name }} ]</div>
+      </sc-if>
+    </div>
+  </sc-for>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg, rgba(4,18,22,.82) 0%, rgba(4,18,22,.45) 40%, rgba(4,18,22,0) 72%), linear-gradient(0deg, rgba(4,18,22,.55) 0%, rgba(4,18,22,0) 35%);"></div>
+
+  <nav style="position:absolute;top:0;left:0;right:0;z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:{{ navPad }};background:{{ navBg }};backdrop-filter:{{ navBlur }};-webkit-backdrop-filter:{{ navBlur }};border-bottom:1px solid {{ navBorder }};transition:background .6s ease, border-color .6s ease;">
+    <a href="#" onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;color:#fff;justify-self:start;">
+      <svg width="26" height="26" viewBox="0 0 26 26"><polygon points="3,4 13,10 23,4 20,16 13,23 6,16" fill="#FF7A30"></polygon><polygon points="9,15 13,17 17,15 13,20" fill="#071d21"></polygon></svg>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.06em;line-height:1;padding-top:3px;">Foxico</span>
+    </a>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:44px;font-size:14px;font-weight:400;letter-spacing:.02em;">
+        <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="4">
+          <a href="#" onClick="{{ l.onClick }}" style="color:{{ l.color }};transition:color .5s ease;" style-hover="color:#FF7A30;">{{ l.label }}</a>
+        </sc-for>
+      </div>
+      <button onClick="{{ openContact }}" style="justify-self:end;display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid #FF7A30;background:#FF7A30;color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="background:transparent;">Turga yozilish</button>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <div></div>
+      <button onClick="{{ toggleMenu }}" aria-label="Menyu" style="justify-self:end;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;">
+        <span style="display:block;width:16px;height:1.5px;background:#fff;"></span>
+        <span style="display:block;width:16px;height:1.5px;background:#fff;"></span>
+      </button>
+    </sc-if>
+  </nav>
+
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:15;overflow-y:auto;background:rgba(5,20,24,.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);">
+      <div style="max-width:1180px;margin:0 auto;padding:{{ panelPad }};">
+
+        <sc-if value="{{ vDest }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);"><span style="width:28px;height:1px;background:#FF7A30;"></span>Turlar 2026 – 27</div>
+          {{ hDest }}
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-top:40px;">
+            <sc-for list="{{ allDest }}" as="d" hint-placeholder-count="5">
+              <button onClick="{{ d.open }}" style="text-align:left;padding:8px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);color:#fff;cursor:pointer;display:flex;flex-direction:column;font:inherit;transition:border-color .5s ease;" style-hover="border-color:#FF7A30;">
+                <div style="width:100%;height:220px;border-radius:10px;background-color:{{ d.tone }};background-image:{{ d.image }};background-size:cover;background-position:center;"></div>
+                <div style="padding:14px 8px 8px;display:flex;flex-direction:column;gap:6px;width:100%;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                    <span style="font-size:16px;font-weight:500;">{{ d.name }}</span>
+                    <span style="display:flex;gap:1px;font-size:11px;"><sc-for list="{{ d.stars }}" as="s" hint-placeholder-count="5"><span style="color:{{ s.color }};">★</span></sc-for></span>
+                  </div>
+                  <span style="font-size:13px;color:rgba(255,255,255,.7);">{{ d.duration }} · {{ d.price }} dan</span>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vDetail }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ openDest }}" style="display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.06);color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);margin-bottom:32px;" style-hover="border-color:#FF7A30;color:#FF7A30;">← Barcha yo‘nalishlar</button>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:start;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="height:{{ detailImgH }};border-radius:16px;border:1px solid rgba(255,255,255,.25);background-color:{{ dd.tone }};background-image:{{ dd.mainImg }};background-size:cover;background-position:center;box-shadow:0 30px 60px rgba(0,0,0,.35);transition:background-image .6s ease;"></div>
+              <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;">
+                <sc-for list="{{ dd.gallery }}" as="g" hint-placeholder-count="5">
+                  <button onClick="{{ g.onClick }}" aria-label="Rasm" style="aspect-ratio:1/1;padding:0;border-radius:10px;border:2px solid {{ g.border }};background-image:{{ g.image }};background-size:cover;background-position:center;cursor:pointer;opacity:{{ g.opacity }};transition:all .5s ease;" style-hover="opacity:1;"></button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-start;">
+              <div style="display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);"><span style="width:28px;height:1px;background:#FF7A30;"></span>Yo‘nalish</div>
+              {{ hDetail }}
+              <p style="margin:16px 0 0;font-size:15px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.82);max-width:480px;text-wrap:pretty;">{{ dd.desc }}</p>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 16px;margin-top:32px;width:100%;padding:22px 0;border-top:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18);">
+                <sc-for list="{{ dd.facts }}" as="x" hint-placeholder-count="6">
+                  <div style="display:flex;flex-direction:column;gap:6px;">
+                    <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);">{{ x.label }}</span>
+                    <span style="font-size:15px;font-weight:500;">{{ x.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;">
+                <sc-for list="{{ dd.highlights }}" as="hl" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.88);"><span style="width:6px;height:6px;border-radius:50%;background:#FF7A30;flex:none;"></span>{{ hl }}</div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;">
+                <button onClick="{{ bookThis }}" style="display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid #FF7A30;background:#FF7A30;color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="background:transparent;">Turga yozilish →</button>
+                <button onClick="{{ dd.onBookmark }}" style="display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.06);color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="border-color:#FF7A30;color:#FF7A30;">{{ dd.saveLabel }}</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;margin-top:80px;padding-top:56px;border-top:1px solid rgba(255,255,255,.14);">
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;letter-spacing:.01em;text-transform:uppercase;">Tur haqida</span>
+              <sc-for list="{{ dd.about }}" as="para" hint-placeholder-count="2">
+                <p style="margin:0;font-size:15px;font-weight:300;line-height:1.8;color:rgba(255,255,255,.82);text-wrap:pretty;">{{ para }}</p>
+              </sc-for>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px;padding:24px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);">
+                <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);">Narxga kiradi</span>
+                <sc-for list="{{ dd.included }}" as="inc" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.9);"><span style="color:#FF7A30;font-size:13px;">✓</span>{{ inc }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;letter-spacing:.01em;text-transform:uppercase;">Sayohat dasturi</span>
+              <div style="display:flex;flex-direction:column;">
+                <sc-for list="{{ dd.program }}" as="pr" hint-placeholder-count="5">
+                  <div style="display:grid;grid-template-columns:96px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.14);">
+                    <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;color:#FF7A30;line-height:1.1;">{{ pr.day }}</span>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <span style="font-size:15px;font-weight:500;">{{ pr.title }}</span>
+                      <span style="font-size:14px;font-weight:300;line-height:1.6;color:rgba(255,255,255,.72);">{{ pr.text }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vBlog }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);"><span style="width:28px;height:1px;background:#FF7A30;"></span>Sayohat qaydlari</div>
+          {{ hBlog }}
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;margin-top:40px;">
+            <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+              <button onClick="{{ p.open }}" style="text-align:left;padding:0;border:none;background:transparent;color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:14px;font:inherit;" style-hover="color:#FF7A30;">
+                <div style="width:100%;height:220px;border-radius:16px;border:1px solid rgba(255,255,255,.22);background-image:{{ p.image }};background-size:cover;background-position:center;"></div>
+                <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);">{{ p.date }} · {{ p.destName }}</span>
+                <span style="font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;letter-spacing:.01em;text-transform:uppercase;">{{ p.title }}</span>
+                <span style="font-size:14px;font-weight:300;line-height:1.6;color:rgba(255,255,255,.75);">{{ p.excerpt }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vPost }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:flex-start;">
+            <button onClick="{{ openBlog }}" style="display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.06);color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="border-color:#FF7A30;color:#FF7A30;">← Barcha maqolalar</button>
+            <div style="margin-top:32px;"></div><div style="display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);"><span style="width:28px;height:1px;background:#FF7A30;"></span>{{ post.date }} · {{ post.destName }}</div>
+            {{ hPost }}
+            <div style="width:100%;height:{{ detailImgH }};margin-top:28px;border-radius:16px;background-image:{{ post.image }};background-size:cover;background-position:center;"></div>
+            <sc-for list="{{ post.body }}" as="para" hint-placeholder-count="2">
+              <p style="margin:24px 0 0;font-size:16px;font-weight:300;line-height:1.8;color:rgba(255,255,255,.85);text-wrap:pretty;">{{ para }}</p>
+            </sc-for>
+            <button onClick="{{ post.openDest }}" style="margin-top:32px;display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid #FF7A30;background:#FF7A30;color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="background:transparent;">{{ post.destName }} turini ko‘rish →</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vContact }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:56px;align-items:start;">
+            <div style="display:flex;flex-direction:column;align-items:flex-start;">
+              <div style="display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);"><span style="width:28px;height:1px;background:#FF7A30;"></span>Safaringizni rejalang</div>
+              {{ hContact }}
+              <p style="margin:16px 0 0;font-size:15px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.8);max-width:420px;text-wrap:pretty;">Qayerga va qachon bormoqchi ekaningizni yozing. Foxico menejeri bir ish kuni ichida qo‘ng‘iroq qilib, yo‘nalish va narxni aytib beradi.</p>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:36px;width:100%;max-width:420px;">
+                <a href="tel:+998712000000" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);color:#fff;transition:border-color .5s ease;" style-hover="border-color:#FF7A30;color:#fff;">
+                  <span style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);">Telefon</span><span style="font-size:17px;font-weight:500;">+998 71 200 00 00</span></span>
+                  <span style="width:36px;height:36px;border-radius:50%;background:#FF7A30;display:flex;align-items:center;justify-content:center;flex:none;">→</span>
+                </a>
+                <a href="https://t.me/foxico_travel" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);color:#fff;transition:border-color .5s ease;" style-hover="border-color:#FF7A30;color:#fff;">
+                  <span style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);">Telegram</span><span style="font-size:17px;font-weight:500;">@foxico_travel</span></span>
+                  <span style="width:36px;height:36px;border-radius:50%;background:#FF7A30;display:flex;align-items:center;justify-content:center;flex:none;">→</span>
+                </a>
+                <div style="display:flex;flex-direction:column;gap:4px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);">
+                  <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);">Ish vaqti</span>
+                  <span style="font-size:17px;font-weight:500;">Du – Sh, 9:00 – 19:00</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding:32px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);box-shadow:0 30px 60px rgba(0,0,0,.25);">
+              <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:24px 0;">
+                  <span style="width:56px;height:56px;border-radius:50%;background:#FF7A30;display:flex;align-items:center;justify-content:center;font-size:24px;">✓</span>
+                  <span style="font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;text-transform:uppercase;">Rahmat, {{ form.name }}!</span>
+                  <span style="font-size:15px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.8);">{{ sentDest }} bo‘yicha so‘rovingiz qabul qilindi. Menejerimiz +998 {{ form.phone }} raqamiga tez orada qo‘ng‘iroq qiladi.</span>
+                  <button onClick="{{ resetForm }}" style="margin-top:12px;display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.06);color:#fff;font-size:14px;font-weight:500;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="border-color:#FF7A30;color:#FF7A30;">Yana so‘rov yuborish</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:24px;">
+                  <span style="font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;text-transform:uppercase;">So‘rov qoldiring</span>
+                  <span style="font-size:14px;font-weight:300;color:rgba(255,255,255,.72);">Biz sizga qo‘ng‘iroq qilib, barcha savollarga javob beramiz.</span>
+                </div>
+                <form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:18px;">
+                  <label style="display:flex;flex-direction:column;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);">Ismingiz<input value="{{ form.name }}" onChange="{{ onName }}" placeholder="Ism va familiya" style="width:100%;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);color:#fff;font:inherit;font-size:14px;outline:none;letter-spacing:0;text-transform:none;"></label>
+                  <label style="display:flex;flex-direction:column;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);">Telefon raqam
+                    <div style="display:flex;align-items:center;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);overflow:hidden;">
+                      <span style="padding:14px 10px 14px 16px;font-size:14px;color:#fff;letter-spacing:0;border-right:1px solid rgba(255,255,255,.18);">+998</span>
+                      <input type="tel" inputmode="numeric" value="{{ form.phone }}" onChange="{{ onPhone }}" placeholder="90 123 45 67" style="flex:1;min-width:0;padding:14px 16px 14px 12px;background:transparent;border:none;color:#fff;font:inherit;font-size:14px;outline:none;letter-spacing:.04em;">
+                    </div>
+                  </label>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;">
+                    <div style="position:relative;display:flex;flex-direction:column;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);">Yo‘nalish
+                      <button type="button" onClick="{{ toggleDd }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:5px 14px 5px 5px;border-radius:12px;border:1px solid {{ ddBorder }};background:rgba(255,255,255,.06);color:#fff;font:inherit;font-size:14px;letter-spacing:0;text-transform:none;cursor:pointer;text-align:left;transition:border-color .5s ease;" style-hover="border-color:#FF7A30;">
+                        <span style="width:38px;height:38px;border-radius:9px;background-color:{{ selDest.tone }};background-image:{{ selDest.image }};background-size:cover;background-position:center;flex:none;"></span>
+                        <span style="flex:1;">{{ selDest.name }}</span>
+                        <span style="font-size:12px;color:rgba(255,255,255,.7);transform:{{ ddChevron }};transition:transform .5s cubic-bezier(.22,1,.36,1);">▾</span>
+                      </button>
+                      <sc-if value="{{ ddOpen }}" hint-placeholder-val="{{ false }}">
+                        <div style="position:absolute;top:100%;left:0;right:0;margin-top:8px;z-index:5;padding:6px;border-radius:14px;background:rgba(8,32,36,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.25);box-shadow:0 24px 48px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:2px;">
+                          <sc-for list="{{ destOpts }}" as="o" hint-placeholder-count="5">
+                            <button type="button" onClick="{{ o.onClick }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:5px 12px 5px 5px;border-radius:10px;border:none;background:{{ o.bg }};color:#fff;font:inherit;font-size:14px;letter-spacing:0;text-transform:none;cursor:pointer;text-align:left;transition:background .4s ease;" style-hover="background:rgba(255,255,255,.1);">
+                              <span style="width:32px;height:32px;border-radius:8px;background-color:{{ o.tone }};background-image:{{ o.image }};background-size:cover;background-position:center;flex:none;"></span>
+                              <span style="flex:1;">{{ o.name }}</span>
+                              <span style="font-size:12px;color:#FF7A30;">{{ o.check }}</span>
+                            </button>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);">Sayohatchilar
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:5px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);">
+                        <button type="button" onClick="{{ peopleDec }}" aria-label="Kamaytirish" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:18px;cursor:pointer;transition:all .5s ease;" style-hover="border-color:#FF7A30;color:#FF7A30;">−</button>
+                        <span style="font-size:15px;font-weight:500;color:#fff;letter-spacing:0;text-transform:none;">{{ peopleLabel }}</span>
+                        <button type="button" onClick="{{ peopleInc }}" aria-label="Ko‘paytirish" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:18px;cursor:pointer;transition:all .5s ease;" style-hover="border-color:#FF7A30;color:#FF7A30;">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);">Qo‘ng‘iroq uchun qulay vaqt
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                      <sc-for list="{{ timeOpts }}" as="t" hint-placeholder-count="3">
+                        <button type="button" onClick="{{ t.onClick }}" style="padding:10px 18px;border-radius:999px;border:1px solid {{ t.border }};background:{{ t.bg }};color:#fff;font:inherit;font-size:13px;letter-spacing:0;text-transform:none;cursor:pointer;transition:all .5s ease;">{{ t.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <label style="display:flex;flex-direction:column;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);">Izoh<textarea value="{{ form.message }}" onChange="{{ onMsg }}" rows="3" placeholder="Sanalar, byudjet yoki boshqa istaklar" style="width:100%;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);color:#fff;font:inherit;font-size:14px;outline:none;letter-spacing:0;text-transform:none;resize:vertical;"></textarea></label>
+                  <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#FF9A5E;">{{ err }}</span></sc-if>
+                  <button type="submit" style="justify-content:center;display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid #FF7A30;background:#FF7A30;color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);padding:15px 22px;" style-hover="background:transparent;">So‘rov yuborish →</button>
+                </form>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:30;background:rgba(5,22,26,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;padding:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.06em;">Foxico</span>
+        <button onClick="{{ toggleMenu }}" aria-label="Yopish" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font-size:20px;cursor:pointer;">×</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:64px;font-family:'Bebas Neue',sans-serif;font-size:56px;line-height:1.05;letter-spacing:.02em;">
+        <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="4">
+          <a href="#" onClick="{{ l.onClick }}" style="color:{{ l.mColor }};">{{ l.label }}</a>
+        </sc-for>
+      </div>
+      <button onClick="{{ openContact }}" style="margin-top:auto;justify-content:center;display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;border:1px solid #FF7A30;background:#FF7A30;color:#fff;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);">Turga yozilish</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:56px;top:50%;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:22px;">
+      <div style="width:1px;height:56px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.35));"></div>
+      <sc-for list="{{ dots }}" as="d" hint-placeholder-count="5">
+        <button onClick="{{ d.onClick }}" aria-label="{{ d.label }}" style="width:14px;height:14px;padding:0;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <span style="display:block;width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.color }};box-shadow:{{ d.ring }};transition:all .8s cubic-bezier(.65,0,.35,1);"></span>
+        </button>
+      </sc-for>
+      <div style="width:1px;height:56px;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));"></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.08em;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;gap:4px;">
+        <span style="color:#fff;">{{ num }}</span><span style="color:rgba(255,255,255,.45);">/ {{ total }}</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <div onMouseEnter="{{ pause }}" onMouseLeave="{{ resume }}" style="position:absolute;z-index:10;left:{{ heroLeft }};top:{{ heroTop }};transform:{{ heroTransform }};max-width:{{ heroMax }};display:flex;flex-direction:column;align-items:flex-start;">
+    {{ title }}
+    {{ desc }}
+    <button onClick="{{ explore }}" style="margin-top:32px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 28px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:14px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="background:#FF7A30;border-color:#FF7A30;">
+      Batafsil
+      <span style="width:28px;height:28px;border-radius:50%;background:#fff;color:#071d21;display:flex;align-items:center;justify-content:center;font-size:14px;">→</span>
+    </button>
+  </div>
+
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <div onMouseEnter="{{ pause }}" onMouseLeave="{{ resume }}" style="position:absolute;z-index:10;left:{{ cardsLeft }};right:0;bottom:{{ cardsBottom }};height:{{ cardsHeight }};">
+      <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+        <div onClick="{{ c.onClick }}" style="position:absolute;left:0;bottom:0;width:{{ c.width }};height:{{ c.height }};transform:{{ c.transform }};opacity:{{ c.opacity }};z-index:{{ c.z }};pointer-events:{{ c.pointer }};transition:{{ c.transition }};box-shadow:{{ c.shadow }};transform-origin:left bottom;will-change:transform, opacity;backface-visibility:hidden;border-radius:16px;padding:8px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.32);cursor:pointer;display:flex;flex-direction:column;" style-hover="border-color:rgba(255,122,48,.9);">
+          <div style="position:relative;flex:1;border-radius:10px;overflow:hidden;background-color:{{ c.tone }};background-image:{{ c.image }};background-size:cover;background-position:center;">
+            <sc-if value="{{ c.placeholder }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute;left:10px;bottom:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.45);text-transform:uppercase;">rasm · {{ c.name }}</div>
+            </sc-if>
+            <button onClick="{{ c.onBookmark }}" aria-label="Saqlash" style="position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(8,30,34,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#fff;transition:all .5s ease;" style-hover="color:#FF7A30;border-color:#FF7A30;">
+              <svg width="14" height="14" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z" fill="{{ c.bmFill }}" stroke="{{ c.bmStroke }}" stroke-width="2" stroke-linejoin="round"></path></svg>
+            </button>
+          </div>
+          <div style="padding:12px 6px 4px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <span style="font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ c.name }}</span>
+            <span style="display:flex;gap:1px;font-size:11px;">
+              <sc-for list="{{ c.stars }}" as="s" hint-placeholder-count="5"><span style="color:{{ s.color }};">★</span></sc-for>
+            </span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;z-index:10;left:50%;bottom:40px;transform:translateX(-50%);display:flex;gap:14px;">
+      <button onClick="{{ prev }}" aria-label="Oldingi" style="width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:18px;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="border-color:#FF7A30;color:#FF7A30;">←</button>
+      <button onClick="{{ next }}" aria-label="Keyingi" style="width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:18px;cursor:pointer;transition:all .6s cubic-bezier(.22,1,.36,1);" style-hover="border-color:#FF7A30;color:#FF7A30;">→</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;z-index:10;left:24px;right:24px;bottom:252px;display:flex;align-items:center;gap:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.08em;">
+      <span>{{ num }}</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,.25);position:relative;">
+        <div style="position:absolute;left:0;top:-1px;height:3px;width:{{ progressPct }};background:#FF7A30;border-radius:2px;transition:width .9s cubic-bezier(.65,0,.35,1);"></div>
+      </div>
+      <span style="color:rgba(255,255,255,.5);">{{ total }}</span>
+    </div>
+    <div ref="{{ rowRef }}" style="position:absolute;z-index:10;left:0;right:0;bottom:24px;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 24px;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+      <sc-for list="{{ mcards }}" as="c" hint-placeholder-count="4">
+        <div onClick="{{ c.onClick }}" style="flex:0 0 auto;scroll-snap-align:start;width:150px;height:204px;border-radius:16px;padding:6px;background:rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.32);display:flex;flex-direction:column;box-shadow:0 12px 30px rgba(0,0,0,.25);">
+          <div style="position:relative;flex:1;border-radius:10px;overflow:hidden;background-color:{{ c.tone }};background-image:{{ c.image }};background-size:cover;background-position:center;">
+            <button onClick="{{ c.onBookmark }}" aria-label="Saqlash" style="position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(8,30,34,.35);display:flex;align-items:center;justify-content:center;padding:0;color:#fff;">
+              <svg width="12" height="12" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z" fill="{{ c.bmFill }}" stroke="{{ c.bmStroke }}" stroke-width="2" stroke-linejoin="round"></path></svg>
+            </button>
+          </div>
+          <div style="padding:8px 4px 2px;display:flex;flex-direction:column;gap:2px;">
+            <span style="font-size:13px;font-weight:500;">{{ c.name }}</span>
+            <span style="display:flex;gap:1px;font-size:10px;">
+              <sc-for list="{{ c.stars }}" as="s" hint-placeholder-count="5"><span style="color:{{ s.color }};">★</span></sc-for>
+            </span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;intervalSec&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:6,&quot;min&quot;:3,&quot;max&quot;:12,&quot;step&quot;:1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;titleFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Bebas Neue&quot;,&quot;Anton&quot;],&quot;default&quot;:&quot;Bebas Neue&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Type&quot;},&quot;photoBali&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Photos (image URLs)&quot;},&quot;photoIndonesia&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Photos (image URLs)&quot;},&quot;photoThailand&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Photos (image URLs)&quot;},&quot;photoJapan&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Photos (image URLs)&quot;},&quot;photoIceland&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Photos (image URLs)&quot;}}">
+const DEST = [
+  { key: 'Bali', name: 'Bali', rating: 5, tone: '#0e3a3b', desc: 'Pog‘onali sholi dalalari, qoya ustidagi ibodatxonalar va janubiy sohildagi iliq to‘lqinlar. Sokin tonglar va uzoq oltin oqshomlar.' },
+  { key: 'Indonesia', name: 'Indoneziya', rating: 4, tone: '#0c3345', desc: 'Vulqon tizmalari, marjon riflari va sokin baliqchi qishloqlaridan iborat o‘n yetti ming orol.' },
+  { key: 'Thailand', name: 'Tailand', rating: 5, tone: '#113b33', desc: 'Moviy ko‘rfazlardan ko‘tarilgan ohaktosh qoyalar, fonusli tungi bozorlar va shimoldagi sokin daryo bo‘yi shaharchalari.' },
+  { key: 'Japan', name: 'Yaponiya', rating: 5, tone: '#183041', desc: 'Kedr o‘rmonlari, tog‘ onsenlari va erta tongda sokin turadigan qadimiy yog‘och ko‘chalar.' },
+  { key: 'Iceland', name: 'Islandiya', rating: 4, tone: '#1e3848', desc: 'Qora qumli plyajlar, muzlik ko‘llari va shimoliy fyordlar uzra yarim tungi yorug‘lik.' },
+];
+const N = DEST.length;
+const NAME = Object.fromEntries(DEST.map(x => [x.key, x.name]));
+const INCL = ['Aviachiptalar (Toshkentdan)', 'Mehmonxona, nonushta bilan', 'Aeroport transferlari', 'O‘zbek tilidagi gid', 'Barcha ekskursiyalar va kirish chiptalari'];
+const INFO = {
+  Bali: { best: 'Aprel – Oktabr', duration: '8 kun', price: '$1 290', currency: 'Rupiya (IDR)', tz: '+3 soat', group: '12 kishigacha',
+    gallery: ['1555400038-63f5ba517a47', '1518548419970-58e3b4079ab2', '1573790387438-4da905039392', '1544644181-1484b3fdfc62'],
+    highlights: ['Tongda Batur vulqoniga chiqish', 'Tegallalang sholi pog‘onalari va Ubud', 'Ulun Danu Beratan ko‘l ibodatxonasi'],
+    about: ['Bali – Indoneziyaning eng mashhur oroli. Bu yerda hindu ibodatxonalari, yam-yashil sholi dalalari va okean sohillari bir-biriga yaqin joylashgan.', 'Tur Ubud va janubiy sohil o‘rtasida bo‘linadi: avval orolning madaniy markazida tog‘ va ibodatxonalarni ko‘rasiz, keyin Nusa Penida qoyalari va plyajlarda dam olasiz.'],
+    program: [{ day: '1 – 2 kun', title: 'Ubudga kelish', text: 'Aeroportdan transfer, Ubud bozori va Maymunlar o‘rmoni.' }, { day: '3 kun', title: 'Batur vulqoni', text: 'Tongda cho‘qqiga chiqish, issiq buloqlarda dam olish.' }, { day: '4 kun', title: 'Sholi pog‘onalari', text: 'Tegallalang va Jatiluwih dalalari bo‘ylab sayr.' }, { day: '5 – 6 kun', title: 'Ibodatxonalar', text: 'Ulun Danu Beratan, Tanah Lot va quyosh botishi.' }, { day: '7 – 8 kun', title: 'Nusa Penida', text: 'Kelingking va Diamond plyajlari, qaytish.' }] },
+  Indonesia: { best: 'May – Sentabr', duration: '12 kun', price: '$1 980', currency: 'Rupiya (IDR)', tz: '+2 soat', group: '10 kishigacha',
+    gallery: ['1596402184320-417e7178b2cd', '1570789210967-2cac24afeb00', '1559628233-100c798642d4', '1604999333679-b86d54738315'],
+    highlights: ['Raja Ampat orollari bo‘ylab sayohat', 'Komodo milliy bog‘iga qayiqda', 'Tongda Borobudur ibodatxonasi'],
+    about: ['Indoneziya – dunyodagi eng katta orollar davlati. Bitta safarda Yavaning qadimiy ibodatxonalari, Komodo ajdarlari va Raja Ampatning marjon riflarini ko‘rish mumkin.', 'Marshrut uchta orol guruhini qamrab oladi, ular orasida ichki reyslar va qayiqlarda harakatlanamiz. Tur faol sayohatni yoqtiradiganlar uchun.'],
+    program: [{ day: '1 – 3 kun', title: 'Yava oroli', text: 'Yogyakarta, tongda Borobudur va Prambanan ibodatxonalari.' }, { day: '4 – 6 kun', title: 'Komodo', text: 'Qayiqda milliy bog‘, pushti plyaj va snorkeling.' }, { day: '7 – 10 kun', title: 'Raja Ampat', text: 'Piaynemo ko‘rfazi, orollar orasida suzish va sho‘ng‘ish.' }, { day: '11 – 12 kun', title: 'Jakarta', text: 'Eski shahar bo‘ylab sayr va qaytish.' }] },
+  Thailand: { best: 'Noyabr – Mart', duration: '10 kun', price: '$1 150', currency: 'Bat (THB)', tz: '+2 soat', group: '14 kishigacha',
+    gallery: ['1528181304800-259b08848526', '1506665531195-3566af2b4dfa', '1508009603885-50cf7c579365', '1563492065599-3520f775eeed'],
+    highlights: ['Krabi atrofida an’anaviy qayiqlarda', 'Chiang Mayning qadimiy ibodatxonalari', 'Bangkokda ko‘cha taomlari oqshomi'],
+    about: ['Tailand – birinchi Osiyo safari uchun eng qulay yo‘nalish. Poytaxtning gavjum ko‘chalari, shimolning sokin ibodatxonalari va janubning moviy ko‘rfazlari bir turda.', 'Guruh Bangkokdan boshlab shimolga Chiang Mayga uchadi, so‘ng dam olish uchun Krabi va Phi Phi orollariga yo‘l oladi.'],
+    program: [{ day: '1 – 3 kun', title: 'Bangkok', text: 'Katta saroy, Wat Arun, suzuvchi bozor va tungi ko‘cha taomlari.' }, { day: '4 – 6 kun', title: 'Chiang May', text: 'Doi Suthep ibodatxonasi, fil qo‘riqxonasi va pazandachilik darsi.' }, { day: '7 – 9 kun', title: 'Krabi va Phi Phi', text: 'Orollar bo‘ylab qayiq sayri, Railay plyaji.' }, { day: '10 kun', title: 'Qaytish', text: 'Bangkok orqali Toshkentga uchish.' }] },
+  Japan: { best: 'Mart – May, Okt – Noy', duration: '11 kun', price: '$2 640', currency: 'Iyena (JPY)', tz: '+4 soat', group: '12 kishigacha',
+    gallery: ['1493976040374-85c8e12f0c0e', '1490806843957-31f4c9a91c65', '1540959733332-eab4deabeeaf', '1542051841857-5f90071e7989'],
+    highlights: ['Kioto ibodatxonalari va Gion', 'Fuji manzarali Hakone onsenlari', 'Tokio mahallalari bo‘ylab sayr'],
+    about: ['Yaponiyada qadimiy an’analar va zamonaviy shaharlar yonma-yon yashaydi. Bahorda sakura, kuzda qizil zarang barglari mamlakatni eng go‘zal holatga keltiradi.', 'Shaharlar orasida tezyurar Shinkansen poyezdida harakatlanamiz. Bir kecha an’anaviy ryokan mehmonxonasida onsen bilan o‘tadi.'],
+    program: [{ day: '1 – 4 kun', title: 'Tokio', text: 'Asakusa, Shibuya, Meiji ibodatxonasi va Tsukiji bozori.' }, { day: '5 – 6 kun', title: 'Hakone', text: 'Fuji manzarasi, Ashi ko‘li va ryokanda onsen.' }, { day: '7 – 9 kun', title: 'Kioto', text: 'Fushimi Inari, Kinkaku-ji, Gion va Arashiyama bambuk o‘rmoni.' }, { day: '10 – 11 kun', title: 'Nara va Osaka', text: 'Nara bug‘ulari, Osaka ko‘cha taomlari, qaytish.' }] },
+  Iceland: { best: 'Iyun – Avgust', duration: '7 kun', price: '$2 380', currency: 'Krona (ISK)', tz: '−5 soat', group: '8 kishigacha',
+    gallery: ['1504829857797-ddff29c27927', '1531366936337-7c912a4589a7', '1529963183134-61a90db47eaf'],
+    highlights: ['Janubiy sohil sharsharalari', 'Yokulsarlon muzlik ko‘li', 'Vik qora qumli plyaji'],
+    about: ['Islandiya – vulqonlar, muzliklar va sharsharalar oroli. Yozda quyosh deyarli botmaydi, kuz va qishda esa shimoliy yog‘du ko‘rinadi.', 'Kichik guruhda jip bilan janubiy sohil bo‘ylab yuramiz. Har kuni 2 – 3 soatlik yo‘l va ko‘p to‘xtashlar rejalashtirilgan.'],
+    program: [{ day: '1 – 2 kun', title: 'Reykyavik', text: 'Poytaxt bo‘ylab sayr va Oltin halqa: Geysir, Gullfoss, Tingvellir.' }, { day: '3 kun', title: 'Sharsharalar', text: 'Seljalandsfoss va Skogafoss.' }, { day: '4 kun', title: 'Vik', text: 'Reynisfjara qora plyaji va Dyrholaey qoyasi.' }, { day: '5 – 6 kun', title: 'Yokulsarlon', text: 'Muzlik ko‘li, Olmos plyaji va muz g‘origa ekskursiya.' }, { day: '7 kun', title: 'Qaytish', text: 'Moviy laguna va aeroportga transfer.' }] },
+};
+const POSTS = [
+  { dest: 'Bali', date: '12 sentabr, 2026', title: 'Ubudda o‘n sokin kun', excerpt: 'Sholi pog‘onalarini olomondan oldin qanday ko‘rish va katta yo‘ldan uzoqda qayerda to‘xtash haqida.', body: ['Ubud erta uyg‘onadi. Soat yettida Tegallalang pog‘onalari allaqachon iliq bo‘ladi, to‘qqizda esa turistik avtobuslar keladi. Quyosh chiqishida borsangiz, so‘qmoqlar deyarli faqat sizniki.', 'Bali guruhlarimizni markazdan shimoldagi kichik oilaviy mehmonxonalarga joylashtiramiz: bozorgacha skuterda yaqin, lekin kechasi baqalar ovozi eshitiladigan darajada tinch.'] },
+  { dest: 'Japan', date: '28 avgust, 2026', title: 'Yaponiyaga birinchi safar', excerpt: 'Poyezd chiptalari, onsen odobi va nega birinchi safar uchun o‘n bir kun eng to‘g‘ri muddat.', body: ['Ko‘pchilik birinchi safarda juda ko‘p joyni ko‘rishga urinadi. O‘n bir kun Tokio, Kioto va Hakoneda har kuni poyezdda o‘tirmasdan bemalol vaqt o‘tkazish imkonini beradi.', 'Onsen qoidalari oddiy: kirishdan oldin yuvining, sochiqni suvga tushirmang va sokin bo‘ling. Gidlarimiz birinchi oqshomdayoq hammasini tushuntirib beradi.'] },
+  { dest: 'Iceland', date: '3 avgust, 2026', title: 'Janubiy sohil bo‘ylab', excerpt: 'Bir yozgi haftada 1-yo‘l bo‘ylab sharsharalar, muzlik ko‘llari va qora qumli plyajlar.', body: ['Iyunda quyosh deyarli botmaydi, shuning uchun janubiy sohil bo‘ylab istalgan soatda yurish mumkin. Seljalandsfoss va Skogafossga kech oqshom boramiz: yorug‘lik yumshoq, to‘xtash joylari bo‘sh.', 'Haftamiz Yokulsarlonda yakunlanadi. U yerda aysberglar muzlikdan dengizga suzib ketadi.'] },
+];
+const TIMES = ['Ertalab', 'Kunduzi', 'Kechqurun'];
+const U = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=2000&q=80`;
+const PHOTOS = { Bali: U('1537996194471-e657df975ab4'), Indonesia: U('1516690561799-46d8f74f9abf'), Thailand: U('1552465011-b4e21bf6e79a'), Japan: U('1528164344705-47542687000d'), Iceland: U('1476610182048-b716b8518aae') };
+const EASE = 'cubic-bezier(.65,0,.35,1)';
+const SMOOTH = 'cubic-bezier(.76,0,.24,1)';
+const STRIPES = 'repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 16px), radial-gradient(120% 90% at 75% 30%, rgba(120,190,190,.22), rgba(0,0,0,0) 60%)';
+
+class Component extends DCLogic {
+  state = { view: 'home', postIdx: 0, sent: false, err: '', form: { name: '', phone: '', dest: 'Bali', people: 2, time: 'Kunduzi', message: '' }, active: 0, prev: 0, paused: false, bm: { Bali: true }, w: window.innerWidth, h: window.innerHeight, menu: false };
+  elapsed = 0;
+  rowRef = React.createRef();
+
+  componentDidMount() {
+    this.onKey = e => {
+      if (e.key === 'Escape') { this.setView('home'); return; }
+      if (this.state.view !== 'home' || /INPUT|TEXTAREA|SELECT/.test(document.activeElement && document.activeElement.tagName)) return;
+      if (e.key === 'ArrowRight') this.go(1); if (e.key === 'ArrowLeft') this.go(-1);
+    };
+    this.onResize = () => this.setState({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('keydown', this.onKey);
+    window.addEventListener('resize', this.onResize);
+    this.timer = setInterval(() => {
+      if (!(this.props.autoplay ?? true) || this.state.paused || this.state.menu || this.state.view !== 'home') return;
+      this.elapsed += 200;
+      if (this.elapsed >= (this.props.intervalSec ?? 6) * 1000) this.go(1);
+    }, 200);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('resize', this.onResize);
+    clearInterval(this.timer);
+  }
+  go(d) {
+    if (!d) return;
+    this.elapsed = 0;
+    this.setState(s => { const off = (s.offset || 0) + d; return { offset: off, prev: s.active, active: ((off % N) + N) % N, galIdx: 0 }; });
+  }
+  setTo(i) {
+    let d = ((i - this.state.active) % N + N) % N;
+    if (d > N / 2) d -= N;
+    this.go(d);
+  }
+  photo(d) {
+    const url = this.props['photo' + d.key] || PHOTOS[d.key];
+    return url ? { image: `url("${url}")`, placeholder: false } : { image: STRIPES, placeholder: true };
+  }
+  setView(view, extra) {
+    this.setState({ view, menu: false, ddOpen: false, ...(extra || {}) });
+  }
+  field(k) { return e => { const v = e.target.value; this.setState(s => ({ form: { ...s.form, [k]: v }, err: '' })); }; }
+  head(text, key, size) {
+    return React.createElement('h2', {
+      key, style: { margin: '10px 0 0', fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400, fontSize: size || 'clamp(56px, 8vw, 104px)', lineHeight: 0.95, letterSpacing: '0.01em', textTransform: 'uppercase', display: 'flex', flexWrap: 'wrap', columnGap: '0.22em', overflow: 'hidden', paddingTop: '0.05em' }
+    }, text.split(' ').map((word, wi) => React.createElement('span', { key: wi, style: { display: 'inline-flex' } },
+      word.split('').map((ch, i) => React.createElement('span', { key: i, style: { display: 'inline-block', animation: `fxLetter .9s cubic-bezier(.22,1,.36,1) ${0.1 + (wi * 4 + i) * 0.04}s both` } }, ch)))));
+  }
+  toggleBm(e, key) {
+    if (e) e.stopPropagation();
+    this.setState(s => ({ bm: { ...s.bm, [key]: !s.bm[key] } }));
+  }
+
+  renderVals() {
+    const { active, prev, w, bm, menu } = this.state;
+    const h = this.state.h || window.innerHeight;
+    const heroLeftPx = Math.min(150, Math.max(110, w * 0.09));
+    const cardsLeftPx = w < 1100 ? w * 0.5 : w * 0.55;
+    const s = Math.min(1, Math.max(0.6, (h - 200) / 560));
+    const isMobile = w < 768;
+    const d = DEST[active];
+    const font = this.props.titleFont ?? 'Bebas Neue';
+    const charW = font === 'Anton' ? 0.5 : 0.4;
+    const len = d.name.length;
+    const size = isMobile
+      ? Math.min(150, (w - 48) / (len * charW))
+      : Math.min(260, w * 0.18, h * 0.3, (cardsLeftPx - heroLeftPx - 48) / (len * charW));
+
+    const title = React.createElement('h1', {
+      key: 't' + active,
+      style: { margin: 0, fontFamily: `'${font}', sans-serif`, fontWeight: 400, fontSize: size + 'px', lineHeight: 0.92, letterSpacing: '0.01em', textTransform: 'uppercase', display: 'flex', overflow: 'hidden', paddingTop: '0.06em' }
+    }, d.name.split('').map((ch, i) => React.createElement('span', {
+      key: i, style: { display: 'inline-block', animation: `fxLetter .9s cubic-bezier(.22,1,.36,1) ${0.15 + i * 0.055}s both` }
+    }, ch)));
+    const desc = React.createElement('p', {
+      key: 'd' + active,
+      style: { margin: '20px 0 0', maxWidth: isMobile ? '380px' : Math.min(380, cardsLeftPx - heroLeftPx - 48) + 'px', fontSize: isMobile ? '14px' : '15px', fontWeight: 300, lineHeight: 1.65, color: 'rgba(255,255,255,.8)', textWrap: 'pretty', animation: `fxFade 1s ${EASE} .45s both` }
+    }, d.desc);
+
+    const pos = i => ((i - active + N) % N) - 1;
+    const oldPos = i => ((i - prev + N) % N) - 1;
+    const stars = r => [0, 1, 2, 3, 4].map(k => ({ color: k < r ? '#FF7A30' : 'rgba(255,255,255,.3)' }));
+    const cardBase = (x, i) => ({
+      name: x.name, tone: x.tone, ...this.photo(x), stars: stars(x.rating),
+      bmFill: bm[x.key] ? '#FF7A30' : 'none', bmStroke: bm[x.key] ? '#FF7A30' : 'currentColor',
+      onClick: () => this.setTo(i), onBookmark: e => this.toggleBm(e, x.key),
+    });
+
+    const off = this.state.offset || 0;
+    const cards = new Array(14);
+    for (let v = off - 5; v <= off + 8; v++) {
+      const i = ((v % N) + N) % N, x = DEST[i], p = v - off;
+      const big = p === 0, vis = p >= 0 && p <= 3;
+      const wpx = 250 * s, hpx = 340 * s, k = big ? 1 : 0.8;
+      const xpx = (p < 0 ? -224 : p === 0 ? 0 : 274 + (p - 1) * 224) * s;
+      cards[((v % 14) + 14) % 14] = ({
+        ...cardBase(x, i),
+        onClick: () => this.go(p),
+        width: wpx + 'px', height: hpx + 'px',
+        transform: `translate3d(${xpx}px, ${big ? -24 * s : 0}px, 0) scale(${k})`,
+        opacity: vis ? 1 : 0, z: 10 - Math.abs(p), pointer: vis ? 'auto' : 'none',
+        shadow: big ? '0 30px 60px rgba(0,0,0,.35)' : '0 14px 34px rgba(0,0,0,.22)',
+        transition: `transform 1.2s ${SMOOTH} ${Math.max(0, Math.min(p, 3)) * 0.06}s, opacity 1s ${SMOOTH}, box-shadow 1.2s ${SMOOTH}, border-color .5s ease`,
+      });
+    }
+    const mcards = [0, 1, 2, 3].map(k => { const i = (active + k) % N; return cardBase(DEST[i], i); });
+
+    const { view, form } = this.state;
+    const nav = (e, v) => { if (e) e.preventDefault(); this.setView(v); };
+    const navOf = { home: 'home', destinations: 'destinations', detail: 'destinations', blog: 'blog', post: 'blog', contact: 'contact' }[view];
+    const navLinks = [['Bosh sahifa', 'home'], ['Yo‘nalishlar', 'destinations'], ['Blog', 'blog'], ['Aloqa', 'contact']].map(([label, v]) => ({
+      label, onClick: e => nav(e, v),
+      color: navOf === v ? '#FF7A30' : 'rgba(255,255,255,.78)', mColor: navOf === v ? '#FF7A30' : '#fff',
+    }));
+    const openDetail = i => { this.setTo(i); this.setState({ view: 'detail', menu: false }); };
+    const inf = INFO[d.key];
+    const dd = {
+      ...d, ...this.photo(d), highlights: inf.highlights, about: inf.about, program: inf.program, included: INCL,
+      facts: [{ label: 'Eng yaxshi vaqt', value: inf.best }, { label: 'Davomiyligi', value: inf.duration }, { label: 'Narxi', value: inf.price + ' dan' }, { label: 'Guruh', value: inf.group }, { label: 'Valyuta', value: inf.currency }, { label: 'Vaqt farqi', value: inf.tz }],
+      ...(() => {
+        const imgs = [this.props['photo' + d.key] || PHOTOS[d.key], ...inf.gallery.map(U)];
+        const gi = Math.min(this.state.galIdx || 0, imgs.length - 1);
+        return {
+          mainImg: `url("${imgs[gi]}")`,
+          gallery: imgs.map((u, k) => ({ image: `url("${u.replace('w=2000', 'w=300')}")`, border: k === gi ? '#FF7A30' : 'transparent', opacity: k === gi ? 1 : 0.6, onClick: () => this.setState({ galIdx: k }) })),
+        };
+      })(),
+      saveLabel: bm[d.key] ? 'Saqlandi ✓' : 'Saqlash', onBookmark: e => this.toggleBm(e, d.key),
+    };
+    const pImg = k => `url("${this.props['photo' + k] || PHOTOS[k]}")`;
+    const posts = POSTS.map((p, i) => ({ ...p, destName: NAME[p.dest], image: pImg(p.dest), open: () => this.setView('post', { postIdx: i }) }));
+    const pp = posts[this.state.postIdx];
+    const post = { ...pp, openDest: () => openDetail(DEST.findIndex(x => x.key === pp.dest)) };
+    return {
+      navLinks, panelOpen: view !== 'home',
+      navBg: view !== 'home' ? 'rgba(5,20,24,.88)' : 'transparent',
+      navBlur: view !== 'home' ? 'blur(16px)' : 'none',
+      navBorder: view !== 'home' ? 'rgba(255,255,255,.1)' : 'transparent',
+      vDest: view === 'destinations', vDetail: view === 'detail', vBlog: view === 'blog', vPost: view === 'post', vContact: view === 'contact',
+      panelPad: isMobile ? '96px 24px 48px' : '128px 56px 80px',
+      detailImgH: isMobile ? '260px' : '460px',
+      goHome: e => nav(e, 'home'), openContact: () => this.setView('contact'),
+      openDest: () => this.setView('destinations'), openBlog: () => this.setView('blog'),
+      allDest: DEST.map((x, i) => ({ ...x, ...this.photo(x), ...INFO[x.key], stars: stars(x.rating), open: () => openDetail(i) })),
+      dd, posts, post,
+      bookThis: () => this.setState(s => ({ view: 'contact', sent: false, form: { ...s.form, dest: d.key } })),
+      hDest: this.head('Yo‘nalishlar', 'hd'), hBlog: this.head('Blog', 'hb'), hContact: this.head('Aloqa', 'hc'),
+      hDetail: this.head(d.name, 'hx' + active), hPost: this.head(pp.title, 'hp' + this.state.postIdx, 'clamp(48px, 6vw, 80px)'),
+      sentDest: NAME[form.dest],
+      selDest: (() => { const x = DEST.find(y => y.key === form.dest); return { name: x.name, tone: x.tone, image: `url("${(this.props['photo' + x.key] || PHOTOS[x.key]).replace('w=2000', 'w=120')}")` }; })(),
+      destOpts: DEST.map(x => ({ name: x.name, tone: x.tone, image: `url("${(this.props['photo' + x.key] || PHOTOS[x.key]).replace('w=2000', 'w=120')}")`, onClick: () => this.setState(s => ({ form: { ...s.form, dest: x.key }, err: '', ddOpen: false })), bg: form.dest === x.key ? 'rgba(255,122,48,.18)' : 'transparent', check: form.dest === x.key ? '✓' : '' })),
+      ddOpen: !!this.state.ddOpen, toggleDd: () => this.setState(s => ({ ddOpen: !s.ddOpen })),
+      ddBorder: this.state.ddOpen ? '#FF7A30' : 'rgba(255,255,255,.25)', ddChevron: this.state.ddOpen ? 'rotate(180deg)' : 'none', peopleLabel: form.people + ' kishi',
+      peopleDec: () => this.setState(s => ({ form: { ...s.form, people: Math.max(1, s.form.people - 1) } })),
+      peopleInc: () => this.setState(s => ({ form: { ...s.form, people: Math.min(20, s.form.people + 1) } })),
+      timeOpts: TIMES.map(t => ({ label: t, onClick: () => this.setState(s => ({ form: { ...s.form, time: t } })), bg: form.time === t ? '#FF7A30' : 'rgba(255,255,255,.06)', border: form.time === t ? '#FF7A30' : 'rgba(255,255,255,.25)' })),
+      onPhone: e => {
+        const dg = e.target.value.replace(/\D/g, '').replace(/^998/, '').slice(0, 9);
+        const v = [dg.slice(0, 2), dg.slice(2, 5), dg.slice(5, 7), dg.slice(7, 9)].filter(Boolean).join(' ');
+        this.setState(s => ({ form: { ...s.form, phone: v }, err: '' }));
+      },
+      form, sent: this.state.sent, notSent: !this.state.sent, err: this.state.err,
+      destNames: DEST.map(x => x.name),
+      onName: this.field('name'), onDest: this.field('dest'), onMsg: this.field('message'),
+      submit: e => {
+        e.preventDefault();
+        if (!form.name.trim()) return this.setState({ err: 'Ismingizni kiriting.' });
+        if (form.phone.replace(/\D/g, '').length !== 9) return this.setState({ err: 'Telefon raqamni to‘liq kiriting.' });
+        this.setState({ sent: true, err: '' });
+      },
+      resetForm: () => this.setState(s => ({ sent: false, form: { ...s.form, message: '' } })),
+      isDesktop: !isMobile, isMobile, menuOpen: menu && isMobile,
+      navPad: isMobile ? '20px 24px' : '32px 56px',
+      bgs: DEST.map((x, i) => ({ name: x.name, tone: x.tone, ...this.photo(x), opacity: i === active ? 1 : 0, transform: i === active ? 'scale(1)' : 'scale(1.06)' })),
+      dots: DEST.map((x, i) => ({
+        label: x.name, onClick: () => this.setTo(i),
+        size: i === active ? '10px' : '6px',
+        color: i === active ? '#FF7A30' : 'rgba(255,255,255,.5)',
+        ring: i === active ? '0 0 0 5px rgba(255,122,48,.22)' : 'none',
+      })),
+      num: String(active + 1).padStart(2, '0'), total: String(N).padStart(2, '0'),
+      progressPct: ((active + 1) / N * 100) + '%',
+      title, desc,
+      heroLeft: isMobile ? '24px' : heroLeftPx + 'px',
+      cardsBottom: (110 + 20 * s) + 'px', cardsHeight: (380 * s) + 'px',
+      heroTop: isMobile ? '104px' : '50%',
+      heroTransform: isMobile ? 'none' : 'translateY(-62%)',
+      heroMax: isMobile ? 'calc(100% - 48px)' : '52%',
+      cardsLeft: cardsLeftPx + 'px',
+      cards, mcards, rowRef: this.rowRef,
+      next: () => this.go(1), prev: () => this.go(-1),
+      pause: () => this.setState({ paused: true }), resume: () => this.setState({ paused: false }),
+      explore: () => openDetail(active),
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      onTouchStart: e => {
+        if (this.rowRef.current && this.rowRef.current.contains(e.target)) { this.tx = null; return; }
+        this.tx = e.touches[0].clientX; this.ty = e.touches[0].clientY;
+      },
+      onTouchEnd: e => {
+        if (this.tx == null) return;
+        const dx = e.changedTouches[0].clientX - this.tx, dy = e.changedTouches[0].clientY - this.ty;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) this.go(dx < 0 ? 1 : -1);
+        this.tx = null;
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
