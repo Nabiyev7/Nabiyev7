@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Site 1</title>
+    <meta name="description" content="Site 1 – yangi sayt uchun boshlang‘ich sahifa." />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Asosiy qismga o‘tish</a>
+
+    <header class="site-header">
+      <a class="brand" href="./">Site&nbsp;1</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+        <span class="sr-only">Menyu</span>
+      </button>
+      <nav id="nav" class="nav">
+        <a href="#about">Biz haqimizda</a>
+        <a href="#services">Xizmatlar</a>
+        <a href="#contact">Aloqa</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Yangi loyiha</p>
+        <h1>Sayt uchun joy tayyor</h1>
+        <p class="lead">
+          Bu – bo‘sh, ammo ishlaydigan boshlang‘ich sahifa. Matnni, ranglarni va
+          bo‘limlarni o‘zingizga moslab o‘zgartiring: hech qanday build kerak emas.
+        </p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#services">Nimadan boshlash</a>
+          <a class="btn" href="#contact">Aloqa</a>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <h2>Biz haqimizda</h2>
+        <p>
+          Bu bo‘limga loyiha haqida qisqa matn yozing: nima qilasiz, kimga kerak,
+          nega sizni tanlashadi. Ikki-uch gap yetarli.
+        </p>
+      </section>
+
+      <section id="services" class="section">
+        <h2>Xizmatlar</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Birinchi xizmat</h3>
+            <p>Qisqa tavsif. Kartalarni <code>index.html</code> ichida ko‘paytirish mumkin.</p>
+          </article>
+          <article class="card">
+            <h3>Ikkinchi xizmat</h3>
+            <p>Qisqa tavsif. Sarlavha va matnni o‘zingizning xizmatingizga almashtiring.</p>
+          </article>
+          <article class="card">
+            <h3>Uchinchi xizmat</h3>
+            <p>Qisqa tavsif. Kerak bo‘lmasa, kartani o‘chirib yuboring.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <h2>Aloqa</h2>
+        <p>
+          Telefon va ijtimoiy tarmoq havolalarini shu yerga qo‘ying.
+          <br />
+          <a href="mailto:siz@example.com">siz@example.com</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© <span id="year">2026</span> Site 1</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
